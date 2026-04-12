@@ -1,0 +1,8 @@
+:80 {
+    encode zstd gzip
+
+    @backend_api path /api/v1* /health
+    reverse_proxy @backend_api backend:{$BACKEND_PORT}
+
+    reverse_proxy frontend:3000
+}
