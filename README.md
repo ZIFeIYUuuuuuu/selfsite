@@ -2,7 +2,15 @@
 
 Selfsite is the deployment shell for a personal Applied AI portfolio: a Next.js frontend, FastAPI backend, PostgreSQL/Redis data layer, and Caddy reverse proxy.
 
-## Architecture
+## 双语概览 / Bilingual Overview
+
+| 中文 | English |
+| --- | --- |
+| 个人 Applied AI 作品集的自托管部署外壳。 | A self-hosted deployment shell for a personal Applied AI portfolio. |
+| 包含 Next.js 前端、FastAPI 后端、PostgreSQL/Redis 数据层和 Caddy 反向代理。 | Includes a Next.js frontend, FastAPI backend, PostgreSQL/Redis data layer, and Caddy reverse proxy. |
+| 目标是把项目展示、后端服务、音频资源和部署拓扑放在一个可运行的 monorepo 中。 | The goal is to keep project showcase, backend services, audio assets, and deployment topology in one runnable monorepo. |
+
+## 架构 / Architecture
 
 ```mermaid
 flowchart LR
@@ -15,11 +23,13 @@ flowchart LR
   Frontend --> Projects["Applied AI project pages"]
 ```
 
-## Demo GIF
+## 演示 GIF / Demo GIF
 
 ![Demo GIF](docs/assets/demo.gif)
 
-## Portfolio Metrics
+## 指标 / Portfolio Metrics
+
+自托管应用 baseline 目标；部署到真实 VPS/域名后需要重新测量。
 
 Self-hosted app baseline targets. These should be re-measured on the actual VPS/domain after deployment.
 
