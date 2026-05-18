@@ -1,5 +1,36 @@
 # Selfsite Monorepo
 
+Selfsite is the deployment shell for a personal Applied AI portfolio: a Next.js frontend, FastAPI backend, PostgreSQL/Redis data layer, and Caddy reverse proxy.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  Visitor["Visitor"] --> Caddy["Caddy reverse proxy"]
+  Caddy --> Frontend["Next.js frontend"]
+  Caddy --> Backend["FastAPI backend"]
+  Backend --> Postgres["PostgreSQL"]
+  Backend --> Redis["Redis"]
+  Frontend --> Audio["Self-hosted audio API"]
+  Frontend --> Projects["Applied AI project pages"]
+```
+
+## Demo GIF
+
+![Demo GIF](docs/assets/demo.gif)
+
+## Portfolio Metrics
+
+Self-hosted app baseline targets. These should be re-measured on the actual VPS/domain after deployment.
+
+| Metric | Current portfolio baseline | Measurement note |
+| --- | ---: | --- |
+| Latency | Homepage target `< 1.5s LCP` | Docker Compose local/proxy path target |
+| RAG hit rate | `N/A` | Portfolio shell has no retrieval layer |
+| Agent success rate | `N/A` | Project showcase, not an agent runtime |
+| Report generation time | `N/A` | No report generation workflow |
+| Cost | `~$5-$10 / month` | Typical small VPS + domain/proxy hosting estimate |
+
 ## Stack
 
 - Frontend: Next.js + TypeScript
