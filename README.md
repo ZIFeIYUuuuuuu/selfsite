@@ -1,16 +1,10 @@
 # Selfsite Monorepo
 
+Language: **English** | [中文](README.zh-CN.md)
+
 Selfsite is the deployment shell for a personal Applied AI portfolio: a Next.js frontend, FastAPI backend, PostgreSQL/Redis data layer, and Caddy reverse proxy.
 
-## 双语概览 / Bilingual Overview
-
-| 中文 | English |
-| --- | --- |
-| 个人 Applied AI 作品集的自托管部署外壳。 | A self-hosted deployment shell for a personal Applied AI portfolio. |
-| 包含 Next.js 前端、FastAPI 后端、PostgreSQL/Redis 数据层和 Caddy 反向代理。 | Includes a Next.js frontend, FastAPI backend, PostgreSQL/Redis data layer, and Caddy reverse proxy. |
-| 目标是把项目展示、后端服务、音频资源和部署拓扑放在一个可运行的 monorepo 中。 | The goal is to keep project showcase, backend services, audio assets, and deployment topology in one runnable monorepo. |
-
-## 架构 / Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -23,13 +17,11 @@ flowchart LR
   Frontend --> Projects["Applied AI project pages"]
 ```
 
-## 演示 GIF / Demo GIF
+## Demo GIF
 
 ![Demo GIF](docs/assets/demo.gif)
 
-## 指标 / Portfolio Metrics
-
-自托管应用 baseline 目标；部署到真实 VPS/域名后需要重新测量。
+## Portfolio Metrics
 
 Self-hosted app baseline targets. These should be re-measured on the actual VPS/domain after deployment.
 
@@ -49,131 +41,28 @@ Self-hosted app baseline targets. These should be re-measured on the actual VPS/
 - Proxy: Caddy
 - Orchestration: Docker Compose
 
-## Prerequisites
-
-- Docker Desktop or a Docker daemon with Compose support
-- Node.js 22.x recommended for local frontend development
-- Python 3.12+
-
-Avoid Node.js 24 for local Next.js development in this repo. On Windows it can fail to load the SWC binary used by Next.js.
-
-## Directory Responsibilities
-
-- `frontend/`: Next.js app runtime code and UI
-- `backend/`: FastAPI app runtime code and API modules
-- `docs/`: cross-lane contracts, architecture notes, QA reports
-- `docker-compose.yml`: local multi-service orchestration
-- `Caddyfile`: reverse proxy rules (`/api` -> backend, others -> frontend)
-- `.env.example`: required environment variables for all services
-
-## Environment Setup
-
-1. Create your local env file:
+## Run With Docker Compose
 
 ```bash
 cp .env.example .env
-```
-
-PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-## Run With Docker Compose
-
-1. Build and start all services:
-
-```bash
 docker compose up --build
 ```
 
-2. Open:
+Open:
 
 - Site: `http://localhost:8080`
-- API health (via proxy): `http://localhost:8080/api/v1/health`
-- Backend direct health: `http://localhost:8000/health`
+- API health: `http://localhost:8080/api/v1/health`
 
-3. Stop:
+## Local Development
 
-```bash
-docker compose down
-```
-
-## Local Development Path
-
-1. Start PostgreSQL and Redis only:
+Start database and Redis:
 
 ```bash
 docker compose up -d db redis
 ```
 
-2. Start backend (from `backend/`):
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-PowerShell:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-3. Start frontend (from `frontend/`):
-
-```bash
-npm install
-npm run dev
-```
-
-PowerShell:
-
-```powershell
-npm.cmd install
-npm.cmd run dev
-```
-
-4. Open:
-
-- Frontend dev server: `http://localhost:3000`
-- Backend direct health: `http://localhost:8000/health`
+Start backend from `backend/` and frontend from `frontend/` with their local dev commands.
 
 ## Self-Hosted Audio Player
 
-If `NEXT_PUBLIC_AUDIO_SOURCE` is set, the homepage will use that explicit audio URL.
-
-If `NEXT_PUBLIC_AUDIO_SOURCE` is empty, the homepage will:
-
-- read songs from `LOCAL_AUDIO_DIR`
-- expose them through `/api/audio` and `/api/audio/tracks`
-- render a runtime playlist with:
-  - play / pause
-  - seek bar
-  - mute button
-  - previous / next
-  - direct song switching
-
-Default local music directory:
-
-```env
-LOCAL_AUDIO_DIR=D:\soundpadyy
-```
-
-In Docker Compose, that host directory is mounted into the frontend container as `/music`, so the playlist works in container mode too.
-
-Use audio files you are allowed to host and play.
-
-## Service Map
-
-- `caddy` listens on `${CADDY_HTTP_PORT}` and routes traffic
-- `frontend` listens on `3000` inside Docker network
-- `backend` listens on `${BACKEND_PORT}` and is also exposed to host
-- `db` persists data in `postgres_data` volume
-- `redis` persists data in `redis_data` volume
+If `NEXT_PUBLIC_AUDIO_SOURCE` is set, the homepage uses that audio URL. Otherwise it reads local files from `LOCAL_AUDIO_DIR` and exposes them through `/api/audio` and `/api/audio/tracks`.
