@@ -61,4 +61,14 @@ Start backend from `backend/` and frontend from `frontend/` with their local dev
 
 ## Self-Hosted Audio Player
 
-If `NEXT_PUBLIC_AUDIO_SOURCE` is set, the homepage uses that audio URL. Otherwise it reads local files from `LOCAL_AUDIO_DIR` and exposes them through `/api/audio` and `/api/audio/tracks`.
+If `NEXT_PUBLIC_AUDIO_SOURCE` is set, the app can use that audio URL. Otherwise it can read local files from `LOCAL_AUDIO_DIR` and expose them through `/api/audio` and `/api/audio/tracks`.
+
+Default local music directory placeholder:
+
+```env
+LOCAL_AUDIO_DIR=D:\path\to\music
+```
+
+In Docker Compose, that host directory is mounted into the frontend container as `/music`, so the playlist works in container mode too.
+
+Use audio files you are allowed to host and play.

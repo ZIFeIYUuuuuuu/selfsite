@@ -16,8 +16,17 @@ export type WorkItem = {
   year: string;
   detail: string;
   github?: string;
+  homepage?: string;
+  updatedAt?: string;
   stack?: readonly string[];
   highlights?: readonly string[];
+};
+
+export type GitHubRepository = {
+  name: string;
+  href: string;
+  description: string;
+  language: string;
 };
 
 export type NoteSection = {
@@ -41,20 +50,44 @@ export type NoteItem = {
 
 export const siteProfile = {
   name: "子非鱼",
-  role: "一个路过的程序员",
-  intro: "写前端，也写后端。",
-  about: "这里先放作品、笔记和一些值得留下来的开发记录。",
-  philosophy: "页面要清楚，代码要诚实，交付要能跑。",
-  email: "17849063915@163.com",
+  handle: "ZIFeIYUuuuuuu",
+  role: "Applied AI / Agent Builder",
+  intro: "写前端、后端，也在做 AI Agent 工程。",
+  about: "这里收集我正在推进的项目、开发笔记和一些值得留下来的工程记录。",
+  philosophy: "页面要清楚，代码要诚实，交付要能跑，复杂系统也要能被解释。",
+  email: "",
   github: "https://github.com/ZIFeIYUuuuuuu",
-  qq: "1597609560",
-  wechat: "子非鱼"
+  githubAvatar: "https://avatars.githubusercontent.com/u/273586639?v=4",
+  publicRepos: 6,
+  qq: "",
+  wechat: ""
 } as const;
 
+export const githubRepositories: readonly GitHubRepository[] = [
+  {
+    name: "super-agent",
+    href: "https://github.com/ZIFeIYUuuuuuu/super-agent",
+    description: "智能体工作台，串起对话、工具调用、RAG、审批和会话恢复。",
+    language: "TypeScript / Python"
+  },
+  {
+    name: "Auto-Stata",
+    href: "https://github.com/ZIFeIYUuuuuuu/Auto-Stata",
+    description: "自动化实证分析系统，从 Excel 到 Stata 分析与报告生成。",
+    language: "Python"
+  },
+  {
+    name: "programmer-voice-input",
+    href: "https://github.com/ZIFeIYUuuuuuu/programmer-voice-input",
+    description: "面向程序员的语音输入 HUD，探索更轻的编码输入方式。",
+    language: "Python"
+  }
+] as const;
+
 export const capabilities = [
-  "关注前后端协作是否顺畅，而不只是页面好不好看。",
-  "喜欢先把目录、配置和运行方式理顺，再往里面加功能。",
-  "愿意把复杂问题拆成可落地的小块，再逐步交付。"
+  "关注 AI Agent、自动化工作流和前后端协作能不能真正跑起来。",
+  "喜欢先把目录、配置、数据流和运行方式理顺，再往里面加功能。",
+  "愿意把复杂问题拆成可验证的小块，用项目和笔记持续沉淀。"
 ] as const;
 
 export const principles: readonly Principle[] = [
@@ -92,35 +125,106 @@ export const workflow: readonly WorkflowStep[] = [
 
 export const selectedWork: readonly WorkItem[] = [
   {
-    title: "Auto-Stata",
-    summary: "自动化实证分析系统：从 Excel 数据出发，完成变量识别、Stata 分析与 Word 报告生成。",
-    tag: "Automation",
+    title: "super-agent",
+    summary: "一个面向 AI Agent 应用的工作台，把流式对话、工具调用、RAG 检索、人工审批和会话恢复放进同一套前后端系统。",
+    tag: "Python",
     year: "2026",
     detail:
-      "把 Excel、LLM、Stata 和 Word 报告串成一条完整流程，适合教学演示、基础计量分析和需要快速产出结果与报告的研究场景。",
-    github: "https://github.com/ZIFeIYUuuuuuu/Auto-Stata",
-    stack: ["Python", "Stata", "DashScope / Qwen", "Excel", "Word"],
+      "这个项目的目标是做一个可以演示真实 Agent 工作流的应用，而不是只停留在聊天框。用户在浏览器里发起任务，前端通过 API 代理连接 FastAPI 后端，后端用 LangGraph 编排模型、工具、MCP 客户端、RAG 检索和人工审批节点，并通过 SSE 把 token、工具调用、检索来源和恢复执行过程实时返回到页面。",
+    github: "https://github.com/ZIFeIYUuuuuuu/super-agent",
+    homepage: "https://zifeiyuuuuuuu.github.io/super-agent/",
+    updatedAt: "2026-05-19",
+    stack: ["Python", "TypeScript", "CSS", "Dockerfile"],
     highlights: [
-      "自动读取和清洗 Excel 数据，处理中文表头与变量映射。",
-      "识别被解释变量、解释变量、控制变量、面板标识和时间变量。",
-      "调用 Stata 执行描述统计、VIF、回归、稳健性和面板分析。",
-      "自动生成 .do 文件和 Word 报告，保留分析过程的可复现性。"
+      "适合展示复杂 Agent 产品的基本骨架：前端工作台、FastAPI 服务、LangGraph runtime、PostgreSQL/PGVector、Redis 和工具层集成。",
+      "支持流式聊天、工具调用、MCP 接入、RAG 文档检索、人工审批 checkpoint、恢复执行和 Redis 线程历史。",
+      "带有 trace 视图，用来解释 Agent 为什么检索某些内容、调用哪些工具、在哪些节点等待审批，以及最终引用了哪些来源。",
+      "仓库提供本地 deterministic eval harness，可在不调用外部模型、数据库、Redis 或向量库凭据的情况下跑基础评估。"
     ]
   },
   {
-    title: "super-agent",
-    summary: "智能体工作台：把流式聊天、工具调用、RAG、人工审批和会话缓存放进同一套前后端应用。",
-    tag: "Agent Platform",
+    title: "InterviewPilot-AI",
+    summary: "一个面向技术求职者的模拟面试教练，把 JD 和简历转成差距诊断、模拟面试、评分报告和改进计划。",
+    tag: "Python",
     year: "2026",
     detail:
-      "项目用 FastAPI、LangGraph、PostgreSQL/PGVector、Redis 和 Next.js 15 组成完整工作台，面向多工具接入、文档检索、人工审批与恢复执行这类智能体场景。",
-    github: "https://github.com/ZIFeIYUuuuuuu/super-agent",
-    stack: ["FastAPI", "LangGraph", "PostgreSQL", "PGVector", "Redis", "Next.js 15"],
+      "这个项目服务的是准备后端、全栈或 AI 应用岗位面试的候选人。它先分析目标岗位 JD 和候选人简历，再生成能力差距诊断，安排更贴近岗位的模拟面试，最后用 rubric 输出表现报告和后续练习建议。项目强调候选人练习和反馈，不做招聘筛选或录用判断。",
+    github: "https://github.com/ZIFeIYUuuuuuu/InterviewPilot-AI",
+    homepage: "https://zifeiyuuuuuuu.github.io/InterviewPilot-AI/",
+    updatedAt: "2026-05-19",
+    stack: ["Python", "JavaScript", "CSS", "HTML"],
     highlights: [
-      "支持流式聊天与 SSE 输出，便于把智能体执行过程直接展示到前端。",
-      "接入 MCP 与工具调用链路，支持外部工具扩展。",
-      "提供 RAG 文档上传与检索能力，把文档知识接进对话流程。",
-      "加入人工审批、恢复执行和 Redis 会话历史缓存，适合继续往真实生产场景扩展。"
+      "流程覆盖 JD 分析、简历分析、差距诊断、简历优化、面试规划、模拟提问、rubric 评分和 coaching plan。",
+      "用多 Agent 分工处理候选人准备链路，每个环节有明确输入输出，避免只生成一组泛泛的面试题。",
+      "使用严格的 Pydantic schema 和 JSON-only prompt contract，让报告和前端展示更稳定。",
+      "提供本地 deterministic fallback，外部 LLM 不可用时也能演示核心流程，并用回归测试覆盖 API 合同、降级输入、会话持久化和报告生成。"
+    ]
+  },
+  {
+    title: "selfsite",
+    summary: "这个个人博客站点本身：用于集中展示项目、笔记、联系方式和一个自托管音乐播放器。",
+    tag: "TypeScript",
+    year: "2026",
+    detail:
+      "selfsite 是一个个人 Applied AI 作品集的部署外壳。前端用 Next.js 做页面和交互，后端用 FastAPI 提供服务接口，PostgreSQL/Redis 作为数据层，Caddy 做反向代理。它既是作品展示页，也是后续接入更多项目页、运行状态和自托管内容的基础。",
+    github: "https://github.com/ZIFeIYUuuuuuu/selfsite",
+    updatedAt: "2026-05-18",
+    stack: ["TypeScript", "CSS", "Python", "Dockerfile", "Mako", "JavaScript"],
+    highlights: [
+      "首页展示 GitHub 身份、精选项目、笔记入口和联系方式，让访问者先知道作者是谁、做过什么。",
+      "作品页按 GitHub 公开仓库整理项目，并为每个项目补充用途、功能和技术栈。",
+      "包含本地音乐目录读取能力，未配置外部音频时可通过 `/api/audio` 和 `/api/audio/tracks` 播放自托管音乐。",
+      "支持 Docker Compose 部署：Next.js、FastAPI、PostgreSQL、Redis 和 Caddy 可以按同一套配置启动。"
+    ]
+  },
+  {
+    title: "Auto-Stata",
+    summary: "自动化实证分析系统：从 Excel 数据出发，完成变量识别、Stata 分析与 Word 报告生成。",
+    tag: "Python",
+    year: "2026",
+    detail:
+      "这个项目面向需要做第一轮实证分析的人：把 Excel 数据放进 `input/` 后，系统读取数据、清洗字段、识别中文表头，把变量映射成 Stata 可用名称，并判断被解释变量、解释变量、控制变量、面板 ID 和时间变量。随后它生成可复现的 `.do` 文件，调用 Stata 跑统计分析，最后把表格、图表、日志和解释写进 Word 报告。",
+    github: "https://github.com/ZIFeIYUuuuuuu/Auto-Stata",
+    updatedAt: "2026-05-18",
+    stack: ["Python"],
+    highlights: [
+      "适合计量经济学教学演示、面板数据和截面问卷数据的原型分析，以及正式论文前的快速探索。",
+      "覆盖描述统计、相关性、VIF、OLS/Logit/Probit、固定效应/随机效应、Hausman、稳健性、异质性和可用情况下的 2SLS。",
+      "输出包括 `variable_mapping.json`、Stata logs、图表、表格、生成的 `.do` 文件和 Word 实证报告。",
+      "正式论文仍需要人工复核，项目更适合节省重复分析和报告整理时间。"
+    ]
+  },
+  {
+    title: "programmer-voice-input",
+    summary: "一个给程序员用的语音输入 HUD，把实时语音识别、文本润色、剪贴板和粘贴流程串起来。",
+    tag: "TypeScript",
+    year: "2026",
+    detail:
+      "这个项目解决的是编码时长文本输入不够顺手的问题。它把语音转文字放进一个轻量 HUD：用户说出需求、注释或说明，系统通过 DashScope ASR 做实时识别，可选地对文本进行润色，然后写入剪贴板或直接粘贴到当前工作流里。它更像一个面向开发者的输入辅助工具，而不是通用录音软件。",
+    github: "https://github.com/ZIFeIYUuuuuuu/programmer-voice-input",
+    updatedAt: "2026-05-18",
+    stack: ["TypeScript", "Rust", "CSS", "PowerShell", "JavaScript", "Batchfile", "VBScript", "HTML"],
+    highlights: [
+      "使用 TypeScript 和 Rust 构建桌面/HUD 类交互，配合脚本处理 Windows 上的启动、剪贴板和粘贴体验。",
+      "支持实时 DashScope ASR，把口述内容快速转成可编辑文本。",
+      "可在写代码、写 commit message、写说明文档时减少键盘输入成本。",
+      "仓库公开简介强调 optional text polish，说明它不仅转写语音，也考虑把口语整理成更适合粘贴的文本。"
+    ]
+  },
+  {
+    title: "ZIFeIYUuuuuuu",
+    summary: "GitHub 个人主页 README，用来集中说明个人方向、项目入口和 Applied AI / Agent Builder 身份。",
+    tag: "Profile",
+    year: "2026",
+    detail:
+      "这是 GitHub 个人主页仓库。它的作用不是承载应用代码，而是在访问者进入 GitHub 主页时给出第一层介绍：你关注 Applied AI、Agent 工程和相关项目，并把重要仓库组织成更容易浏览的入口。",
+    github: "https://github.com/ZIFeIYUuuuuuu/ZIFeIYUuuuuuu",
+    updatedAt: "2026-05-18",
+    stack: ["Markdown"],
+    highlights: [
+      "用于维护 GitHub profile README，让个人主页不只是仓库列表。",
+      "适合放置项目导航、技术方向、联系方式和最近更新。",
+      "和 selfsite 互相补充：GitHub profile 负责开发者主页入口，selfsite 负责更完整的个人博客和作品展示。"
     ]
   }
 ] as const;
