@@ -5,9 +5,9 @@ export default function AboutPage() {
     <>
       <section className="page-intro">
         <p className="eyebrow">About</p>
-        <h1>一个慢慢长出来的个人空间</h1>
+        <h1>{siteProfile.handle}</h1>
         <p className="page-lede">
-          这里不会一下子长成完整作品集，更像是一个持续更新的个人站点起点。先把骨架、气质和表达方式立住，再慢慢把真实项目和文章补进去。
+          一个持续更新的个人博客和项目入口，主要记录 AI Agent、自动化工具、前后端应用和工程实践。
         </p>
       </section>
 
@@ -69,9 +69,6 @@ export default function AboutPage() {
           <h2>目前先把最基础的联系方式放在这里，后面再按需要补更多入口。</h2>
         </div>
         <div className="contact-actions">
-          <a className="button button-solid" href={`mailto:${siteProfile.email}`}>
-            {siteProfile.email}
-          </a>
           <a className="button button-solid" href={siteProfile.github} rel="noreferrer" target="_blank">
             GitHub
           </a>
