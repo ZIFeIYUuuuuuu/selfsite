@@ -17,10 +17,6 @@ flowchart LR
   Frontend --> Projects["Applied AI project pages"]
 ```
 
-## Demo GIF
-
-![Demo GIF](docs/assets/demo.gif)
-
 ## Portfolio Metrics
 
 Self-hosted app baseline targets. These should be re-measured on the actual VPS/domain after deployment.
