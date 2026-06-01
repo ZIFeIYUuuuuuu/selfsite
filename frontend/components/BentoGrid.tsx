@@ -5,30 +5,21 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
-  FileCode2,
   Inbox,
   Link2,
   Mail,
   MessageCircleMore,
-  Orbit,
-  PanelsTopLeft,
-  PenTool,
   QrCode,
   Sparkles
 } from "lucide-react";
 import { motion } from "motion/react";
 
-import { notes, selectedWork, siteProfile } from "@/lib/site-content";
+import AboutMeReveal from "@/components/AboutMeReveal";
+import { githubRepositories, notes, selectedWork, siteProfile } from "@/lib/site-content";
 
 import styles from "./BentoGrid.module.css";
 
-const techItems = [
-  { label: "Next.js 15", icon: PanelsTopLeft },
-  { label: "React 19", icon: Sparkles },
-  { label: "TypeScript", icon: FileCode2 },
-  { label: "FastAPI", icon: Orbit },
-  { label: "PostgreSQL", icon: PenTool }
-] as const;
+const mail163ComposeUrl = "https://mail.163.com/";
 
 const contactItems = [
   {
@@ -39,9 +30,9 @@ const contactItems = [
   },
   {
     label: "邮箱",
-    href: `mailto:${siteProfile.email}`,
+    href: mail163ComposeUrl,
     icon: Mail,
-    external: false
+    external: true
   },
   {
     label: "QQ",
@@ -94,6 +85,7 @@ export default function BentoGrid() {
 
   const featuredWork = selectedWork[0];
   const latestNotes = notes.slice(0, 3);
+  const featuredRepos = githubRepositories.slice(0, 3);
 
   const handleNewsletterSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -126,21 +118,54 @@ export default function BentoGrid() {
       >
         <motion.article className={`${styles.card} ${styles.heroCard}`} variants={cardVariants}>
           <div className={styles.heroHeader}>
-            <span className={styles.heroTag}>Latest notes</span>
+            <span className={styles.heroTag}>GitHub profile</span>
             <span className={styles.heroIndex}>01</span>
           </div>
 
           <div className={styles.heroBody}>
-            <h1 className={`${styles.title} ${styles.compactTitle}`}>笔记</h1>
+            <div className={styles.profileLockup}>
+              <Image
+                alt={`${siteProfile.handle} GitHub avatar`}
+                className={styles.avatar}
+                height={88}
+                src={siteProfile.githubAvatar}
+                unoptimized
+                width={88}
+              />
+              <div>
+                <p className={styles.profileKicker}>{siteProfile.role}</p>
+                <h1 className={`${styles.title} ${styles.compactTitle}`}>{siteProfile.handle}</h1>
+              </div>
+            </div>
 
-            <div className={styles.noteExhibit}>
-              {latestNotes.map((note) => (
-                <Link className={styles.notePanelLink} href={`/notes?note=${note.slug}`} key={note.slug}>
-                  <article className={styles.notePanel}>
-                    <p className={styles.noteFormat}>{note.format}</p>
-                    <h3 className={styles.noteTitle}>{note.shortTitle}</h3>
-                    <p className={styles.noteSummary}>{note.summary}</p>
-                  </article>
+            <p className={styles.heroStatement}>{siteProfile.intro}</p>
+
+            <div className={styles.heroActions}>
+              <Link className={styles.primaryAction} href={siteProfile.github} rel="noreferrer" target="_blank">
+                <Link2 size={17} />
+                访问 GitHub
+              </Link>
+              <Link className={styles.secondaryAction} href="/work">
+                查看作品
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
+
+            <div className={styles.repoExhibit}>
+              {featuredRepos.map((repo) => (
+                <Link
+                  className={styles.repoPanel}
+                  href={repo.href}
+                  key={repo.name}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span>
+                    <strong>{repo.name}</strong>
+                    <small>{repo.language}</small>
+                  </span>
+                  <p>{repo.description}</p>
+                  <ArrowUpRight size={16} />
                 </Link>
               ))}
             </div>
@@ -170,30 +195,15 @@ export default function BentoGrid() {
         <motion.article className={`${styles.card} ${styles.techCard}`} variants={cardVariants}>
           <div className={styles.cardHeader}>
             <div>
-              <p className={styles.eyebrow}>Tech stack</p>
-              <h3 className={styles.cardTitle}>当前项目技术栈</h3>
+              <p className={styles.eyebrow}>About me</p>
+              <h3 className={styles.cardTitle}>关于我</h3>
             </div>
             <span className={styles.iconFrame}>
-              <FileCode2 size={18} />
+              <Sparkles size={18} />
             </span>
           </div>
 
-          <div className={styles.marquee}>
-            <div className={styles.marqueeTrack}>
-              {techItems.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <div className={styles.techItem} key={item.label}>
-                    <span className={styles.techIcon}>
-                      <Icon size={16} />
-                    </span>
-                    <span>{item.label}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <AboutMeReveal variant="card" />
         </motion.article>
 
         <motion.article className={`${styles.card} ${styles.statusCard}`} variants={cardVariants}>
@@ -201,17 +211,17 @@ export default function BentoGrid() {
             <p className={styles.eyebrow}>Status</p>
             <div className={styles.statusLine}>
               <span className={styles.statusDot} />
-              持续更新
+              GitHub 持续更新
             </div>
           </div>
 
           <div className={styles.statusMeta}>
             <div>
-              <strong>最新内容</strong>
-              <span>{latestNotes[0]?.shortTitle}</span>
+              <strong>公开仓库</strong>
+              <span>{siteProfile.publicRepos} 个</span>
             </div>
             <div>
-              <strong>最新项目</strong>
+              <strong>主推项目</strong>
               <span>{featuredWork.title}</span>
             </div>
           </div>
@@ -241,6 +251,7 @@ export default function BentoGrid() {
                     if (isQrItem) {
                       event.preventDefault();
                     }
+
                   }}
                   rel={item.external ? "noreferrer" : undefined}
                   target={item.external ? "_blank" : undefined}
@@ -284,15 +295,26 @@ export default function BentoGrid() {
         <motion.article className={`${styles.card} ${styles.newsletterCard}`} variants={cardVariants}>
           <div className={styles.cardHeader}>
             <div>
-              <p className={styles.eyebrow}>Newsletter</p>
-              <h3 className={styles.cardTitle}>订阅</h3>
+              <p className={styles.eyebrow}>Latest notes</p>
+              <h3 className={styles.cardTitle}>最近笔记</h3>
             </div>
             <span className={styles.iconFrame}>
               <Inbox size={18} />
             </span>
           </div>
 
-          <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
+          <div className={styles.noteExhibit}>
+            {latestNotes.map((note) => (
+              <Link className={styles.notePanelLink} href={`/notes?note=${note.slug}`} key={note.slug}>
+                <article className={styles.notePanel}>
+                  <p className={styles.noteFormat}>{note.format}</p>
+                  <h3 className={styles.noteTitle}>{note.shortTitle}</h3>
+                </article>
+              </Link>
+            ))}
+          </div>
+
+          <form className={`${styles.newsletterForm} ${styles.compactNewsletterForm}`} onSubmit={handleNewsletterSubmit}>
             <input
               className={styles.newsletterInput}
               onChange={(event) => setEmail(event.target.value)}

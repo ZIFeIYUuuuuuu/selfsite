@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Pause, Play, Shuffle } from "lucide-react";
 
 type AudioTrack = {
   id: string;
@@ -31,6 +31,20 @@ function simplifyTrackTitle(value: string): string {
   return parts.length > 1 ? parts.slice(1).join(" - ").trim() : value.trim();
 }
 
+function getRandomTrackIndex(currentIndex: number, total: number): number {
+  if (total <= 1) {
+    return currentIndex;
+  }
+
+  let nextIndex = currentIndex;
+
+  while (nextIndex === currentIndex) {
+    nextIndex = Math.floor(Math.random() * total);
+  }
+
+  return nextIndex;
+}
+
 export default function SimpleAudioPlayer({
   autoplay = false,
   initialSrc,
@@ -51,7 +65,6 @@ export default function SimpleAudioPlayer({
   );
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState("");
@@ -118,7 +131,7 @@ export default function SimpleAudioPlayer({
 
       if (tracks.length > 1) {
         shouldResumePlaybackRef.current = true;
-        setActiveIndex((current) => (current + 1) % tracks.length);
+        setActiveIndex((current) => getRandomTrackIndex(current, tracks.length));
       }
     };
 
@@ -157,14 +170,6 @@ export default function SimpleAudioPlayer({
     }
   }, [currentTrack]);
 
-  const progress = useMemo(() => {
-    if (!duration) {
-      return 0;
-    }
-
-    return Math.min((currentTime / duration) * 100, 100);
-  }, [currentTime, duration]);
-
   const togglePlay = async () => {
     const audio = audioRef.current;
     if (!audio || !currentTrack) {
@@ -185,141 +190,64 @@ export default function SimpleAudioPlayer({
     audio.pause();
   };
 
-  const toggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) {
-      return;
-    }
-
-    const nextMuted = !audio.muted;
-    audio.muted = nextMuted;
-    setIsMuted(nextMuted);
-  };
-
-  const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    if (!audio || !duration) {
-      return;
-    }
-
-    const nextValue = Number(event.target.value);
-    audio.currentTime = (nextValue / 100) * duration;
-    setCurrentTime(audio.currentTime);
-  };
-
-  const switchTrack = (nextIndex: number) => {
+  const playRandomTrack = () => {
     if (!tracks.length) {
       return;
     }
 
-    shouldResumePlaybackRef.current = isPlaying;
-    setActiveIndex((nextIndex + tracks.length) % tracks.length);
+    shouldResumePlaybackRef.current = true;
+    setActiveIndex((current) => getRandomTrackIndex(current, tracks.length));
   };
 
   if (!initialSrc && !hasLoadedRuntimePlaylist) {
     return (
-      <section className="home-music-bar compact apple-player">
-        <div className="home-music-copy">
-          <p className="home-music-label">音乐播放器</p>
-          <p className="home-music-title">正在读取歌曲目录</p>
-        </div>
+      <section className="floating-audio-player" aria-label="音乐播放器">
+        <button aria-label="正在读取歌曲目录" className="floating-audio-button" disabled type="button">
+          <Play size={18} />
+        </button>
+        <button aria-label="随机下一首" className="floating-audio-button" disabled type="button">
+          <Shuffle size={18} />
+        </button>
       </section>
     );
   }
 
   if (!currentTrack) {
     return (
-      <section className="home-music-bar compact apple-player">
-        <div className="home-music-copy">
-          <p className="home-music-label">音乐播放器</p>
-          <p className="home-music-title">暂时没有可播放歌曲</p>
-          <p className="home-music-hint">
-            {error || "请检查 NEXT_PUBLIC_AUDIO_SOURCE 或 LOCAL_AUDIO_DIR。"}
-          </p>
-        </div>
+      <section className="floating-audio-player" aria-label={error || "暂时没有可播放歌曲"}>
+        <button aria-label="暂时没有可播放歌曲" className="floating-audio-button" disabled type="button">
+          <Play size={18} />
+        </button>
+        <button aria-label="随机下一首" className="floating-audio-button" disabled type="button">
+          <Shuffle size={18} />
+        </button>
       </section>
     );
   }
 
   return (
-    <section className="home-music-bar compact apple-player">
-      <div className="home-music-copy">
-        <p className="home-music-label">音乐播放器</p>
-        <p className="home-music-title">{currentTrack.title}</p>
-        <p className="home-music-hint">更轻的控制条，更直接的选歌方式。</p>
-      </div>
-
-      <div className="audio-player compact apple-player">
-        <button
-          aria-label={isMuted ? "取消静音" : "静音"}
-          className="audio-mute-button"
-          onClick={toggleMute}
-          type="button"
-        >
-          {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-        </button>
-
-        <div className="audio-main compact">
-          <div className="audio-control-cluster">
-            <button
-              className="audio-nav-button icon-only"
-              onClick={() => switchTrack(activeIndex - 1)}
-              type="button"
-            >
-              <ChevronLeft size={14} />
-            </button>
-            <button
-              aria-label={isPlaying ? "暂停播放" : "开始播放"}
-              className="audio-play-button primary"
-              onClick={() => {
-                void togglePlay();
-              }}
-              type="button"
-            >
-              {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-            </button>
-            <button
-              className="audio-nav-button icon-only"
-              onClick={() => switchTrack(activeIndex + 1)}
-              type="button"
-            >
-              <ChevronRight size={14} />
-            </button>
-          </div>
-
-          <div className="audio-track">
-            <div className="audio-track-meta">
-              <span>{currentTrack.title}</span>
-              <span>
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-            </div>
-            <input
-              className="audio-range"
-              max="100"
-              min="0"
-              onChange={handleSeek}
-              type="range"
-              value={progress}
-            />
-            <div className="audio-track-actions compact">
-              <select
-                className="audio-select"
-                onChange={(event) => switchTrack(Number(event.target.value))}
-                value={activeIndex}
-              >
-                {tracks.map((track, index) => (
-                  <option key={track.id} value={index}>
-                    {track.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <audio autoPlay={autoplay} preload="metadata" ref={audioRef} />
-      </div>
+    <section className="floating-audio-player" aria-label={`音乐播放器，当前播放 ${currentTrack.title}`}>
+      <button
+        aria-label={isPlaying ? "暂停播放" : "开始播放"}
+        className="floating-audio-button is-primary"
+        onClick={() => {
+          void togglePlay();
+        }}
+        title={`${isPlaying ? "暂停" : "播放"}：${currentTrack.title}`}
+        type="button"
+      >
+        {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+      </button>
+      <button
+        aria-label="随机下一首"
+        className="floating-audio-button"
+        onClick={playRandomTrack}
+        title={`随机下一首 · ${formatTime(currentTime)} / ${formatTime(duration)}`}
+        type="button"
+      >
+        <Shuffle size={18} />
+      </button>
+      <audio autoPlay={autoplay} preload="metadata" ref={audioRef} />
     </section>
   );
 }
