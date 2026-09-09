@@ -20,8 +20,19 @@ export default function WorkPage() {
 
               <div className="project-body">
                 <h2>{item.title}</h2>
-                <p className="project-summary">{item.summary}</p>
-                <p>{item.detail}</p>
+                <section className="project-context" aria-label={`${item.title} 项目说明`}>
+                  <div>
+                    <p className="project-field-label">解决什么</p>
+                    <p className="project-summary">{item.summary}</p>
+                  </div>
+                  <div>
+                    <p className="project-field-label">我做了什么</p>
+                    <details className="project-detail-disclosure">
+                      <summary>展开实现细节</summary>
+                      <p>{item.detail}</p>
+                    </details>
+                  </div>
+                </section>
 
                 {item.updatedAt ? (
                   <p>
@@ -38,11 +49,24 @@ export default function WorkPage() {
                 ) : null}
 
                 {item.highlights?.length ? (
-                  <ul className="capsule-list">
-                    {item.highlights.map((highlight) => (
-                      <li key={highlight}>{highlight}</li>
-                    ))}
-                  </ul>
+                  <section className="project-evidence">
+                    <p className="project-field-label">证据与边界</p>
+                    <ul className="capsule-list">
+                      {item.highlights.slice(0, 1).map((highlight) => (
+                        <li key={highlight}>{highlight}</li>
+                      ))}
+                    </ul>
+                    {item.highlights.length > 1 ? (
+                      <details className="project-detail-disclosure project-evidence-disclosure">
+                        <summary>展开其余证据</summary>
+                        <ul className="capsule-list">
+                          {item.highlights.slice(1).map((highlight) => (
+                            <li key={highlight}>{highlight}</li>
+                          ))}
+                        </ul>
+                      </details>
+                    ) : null}
+                  </section>
                 ) : null}
 
                 {item.github || item.homepage ? (

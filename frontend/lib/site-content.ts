@@ -1,3 +1,5 @@
+import { rewrittenNotes } from "./rewritten-notes";
+
 export type Principle = {
   title: string;
   detail: string;
@@ -52,18 +54,30 @@ export const siteProfile = {
   name: "子非鱼",
   handle: "ZIFeIYUuuuuuu",
   role: "Applied AI / Agent Builder",
-  intro: "写前端、后端，也在做 AI Agent 工程。",
+  intro: "我现在主要在做 AI Agent、前后端系统和自动化工具，把想法做成能运行、能解释、能持续迭代的项目。",
   about: "这里收集我正在推进的项目、开发笔记和一些值得留下来的工程记录。",
   philosophy: "页面要清楚，代码要诚实，交付要能跑，复杂系统也要能被解释。",
-  email: "",
+  email: "contact@example.com",
   github: "https://github.com/ZIFeIYUuuuuuu",
   githubAvatar: "https://avatars.githubusercontent.com/u/273586639?v=4",
-  publicRepos: 6,
+  publicRepos: 10,
   qq: ""
   wechat: ""
 } as const;
 
 export const githubRepositories: readonly GitHubRepository[] = [
+  {
+    name: "solo-company-harness",
+    href: "https://github.com/ZIFeIYUuuuuuu/solo-company-harness",
+    description: "面向独立开发者的 AI Coding 交付 Skill，把目标、合同、证据和复盘串成闭环。",
+    language: "Python / Markdown"
+  },
+  {
+    name: "Radeon-hackathon-2026-07",
+    href: "https://github.com/ZIFeIYUuuuuuu/Radeon-hackathon-2026-07/tree/claimcourt",
+    description: "ClaimCourt 私有证据智能体：本地混合检索、多 Agent 裁决与证据账本。",
+    language: "Python"
+  },
   {
     name: "super-agent",
     href: "https://github.com/ZIFeIYUuuuuuu/super-agent",
@@ -124,6 +138,38 @@ export const workflow: readonly WorkflowStep[] = [
 ] as const;
 
 export const selectedWork: readonly WorkItem[] = [
+  {
+    title: "ClaimCourt",
+    summary: "面向私有文档的本地证据智能体，把模糊请求转成可解释检索计划和可追溯裁决。",
+    tag: "Python",
+    year: "2026",
+    detail:
+      "ClaimCourt 位于 Radeon-hackathon-2026-07 的 claimcourt 分支，面向 AMD Radeon / ROCm 的本地私有 AI Agent 场景。系统将 SQLite FTS5/BM25、BGE 向量检索和 Cross-Encoder 重排组合起来，再用控方、辩方、法官的多 Agent 流程组织证据。这里展示的是仓库 README 和证据文件中的项目结果，不把自报 benchmark 当成独立验收。",
+    github: "https://github.com/ZIFeIYUuuuuuu/Radeon-hackathon-2026-07/tree/claimcourt",
+    updatedAt: "2026-07",
+    stack: ["Python", "Streamlit", "Qwen3-14B", "vLLM", "ROCm", "SQLite FTS5"],
+    highlights: [
+      "用混合检索和重排处理多格式私有文件，并保留可解释的检索路径。",
+      "用引用 ID 白名单、SHA-256 证据账本、脱敏和人工审批限制无依据结论。",
+      "仓库 README 报告了 320/320 条合成对抗查询通过；这些数字仍需要按仓库说明复现。"
+    ]
+  },
+  {
+    title: "solo-company-harness",
+    summary: "一人公司 AI Coding 交付 Skill，用合同、证据和反作弊验收约束 Agent 工作。",
+    tag: "Agent Skills",
+    year: "2026",
+    detail:
+      "Solo Company Harness 是一个公开的 Agent Skill，不是代码生成模板。它把 Intent、Context、Contract、Execute、Verify、Release、Observe、Distill 串成可追踪的交付流程，并用 Design-Locked 与 Discovery-Gated 区分可以实现的模块和仍需补设计的模块。",
+    github: "https://github.com/ZIFeIYUuuuuuu/solo-company-harness",
+    updatedAt: "2026",
+    stack: ["Python", "Markdown", "Codex", "Claude Code", "OpenCode"],
+    highlights: [
+      "按 explore、delivery、high-assurance 三种模式匹配任务风险和验证重量。",
+      "用 L0-L4 证据等级区分静态检查、本地验证、集成验证、真实路径和 dogfood。",
+      "用 Anti-gaming 规则阻止把 fixture、mock、写死返回值或页面能打开冒充真实交付。"
+    ]
+  },
   {
     title: "super-agent",
     summary: "一个面向 AI Agent 应用的工作台，把流式对话、工具调用、RAG 检索、人工审批和会话恢复放进同一套前后端系统。",
@@ -229,7 +275,7 @@ export const selectedWork: readonly WorkItem[] = [
   }
 ] as const;
 
-export const notes: readonly NoteItem[] = [
+export const legacyNotes: readonly NoteItem[] = [
   {
     slug: "agent-first-team-practice",
     title: "普通团队怎么进入 Agent-first 开发：10 条可以直接照抄的做法",
@@ -346,5 +392,123 @@ export const notes: readonly NoteItem[] = [
       "agent-first 开发并不是让 AI 替代工程师，而是重新定义工程师的价值。",
       "真正重要的，不再只是写出代码，而是设计一个让代码能够被稳定生成、验证、修正和维护的系统。"
     ]
+  },
+  {
+    slug: "claimcourt-private-evidence-agent",
+    title: "ClaimCourt：把模糊记忆编译成可审计的证据链",
+    shortTitle: "ClaimCourt 证据智能体",
+    format: "Project Note",
+    summary: "在本地私有边界里，让检索、裁决和引用都能回到具体证据。",
+    lead:
+      "很多问答系统的问题不是不会生成答案，而是无法回答：这句话来自哪个文件、哪个版本、哪一段证据？ClaimCourt 的重点，是把一个模糊请求先编译成检索计划，再让每个结论回到可以复核的证据 ID。",
+    sections: [
+      {
+        title: "先把检索变成计划",
+        paragraphs: [
+          "ClaimCourt 的 claimcourt 分支把 SQLite FTS5/BM25、BGE 向量检索和 Cross-Encoder 重排组合起来。关键词匹配负责召回，向量检索补充语义相似度，重排器再把候选压缩成更适合裁决的证据集合。",
+          "这个顺序比直接把所有文档塞给模型更容易解释：每一步都有输入、候选和筛选结果，出现错误时可以定位到底是召回漏了，还是重排和裁决出了问题。"
+        ],
+        quote: "先证明证据在哪里，再讨论模型应该怎么说。"
+      },
+      {
+        title: "控方、辩方和法官不是装饰",
+        paragraphs: [
+          "多 Agent 流程的价值不在于角色名字，而在于把单次生成拆成相互制约的步骤。控方寻找支持主张的证据，辩方主动寻找反例和缺口，法官只在引用 ID 白名单允许的范围内组织结论。",
+          "SHA-256 证据账本、脱敏和人工审批把“模型说了什么”变成“模型引用了什么”。这仍然不能自动保证结论正确，但让错误具备可追责和可复核的入口。"
+        ]
+      },
+      {
+        title: "指标要和边界一起发布",
+        paragraphs: [
+          "仓库 README 报告了 320/320 条合成对抗查询通过、危险错误自动选择为 0，以及 Radeon PRO W7900 上的延迟和吞吐数据。这些是仓库提供的 benchmark 结果，应该按复现条件理解，不能直接包装成独立第三方验收。",
+          "项目定位是私有本地 AI Agent 的 hackathon 作品。加密、多用户隔离和后台同步仍属于进入生产前需要继续补齐的门槛。"
+        ]
+      }
+    ],
+    checklist: [
+      "查看 claimcourt 分支中的 README、tests 和 evidence 文件。",
+      "复现 benchmark 时记录 GPU、模型、数据集和查询生成方式。",
+      "把证据引用、人工审批和数据隔离作为上线前的独立验收项。"
+    ],
+    closing: [
+      "私有证据智能体的核心竞争力，不是回答更像人，而是每个回答都更容易被追问和复核。"
+    ]
+  },
+  {
+    slug: "solo-company-harness-delivery",
+    title: "Solo Company Harness：AI Coding 为什么需要合同、证据和反作弊验收",
+    shortTitle: "AI Coding 交付闭环",
+    format: "Engineering Note",
+    summary: "把 Agent 从代码生成器变成有边界、有证据、能复盘的交付执行者。",
+    lead:
+      "AI Coding 最容易展示的是生成速度，最难证明的是交付质量。Solo Company Harness 试图解决的不是“怎么让模型多写几行代码”，而是怎样让一次改动从目标开始，到真实路径验证和经验沉淀结束。",
+    sections: [
+      {
+        title: "八个阶段把模糊任务拆开",
+        paragraphs: [
+          "Intent 明确为什么做，Context 固定必须知道的项目事实，Contract 写清验收标准和非目标，Execute 保持小步可逆，Verify 记录实际证据，Release 控制发布范围，Observe 收集残余风险，Distill 把重复经验沉淀下来。",
+          "这条链路的意义，是让“完成”不再等于代码写完，而是等于目标、范围、证据和回滚边界都能被另一个人复查。"
+        ],
+        quote: "没有验收合同的生成，只是一次看起来很顺利的猜测。"
+      },
+      {
+        title: "Design-Locked 和 Discovery-Gated",
+        paragraphs: [
+          "当模块设计、用户故事和验收标准已经完整时，模块进入 Design-Locked，Agent 才适合按合同实现。设计缺失、过期或仍是草稿时，Discovery-Gated 允许调研和补文档，但不应直接修改生产代码、数据库结构或公开 API。",
+          "这个门槛把“先写了再说”的冲动变成一个显式决定，也给用户留下真正需要确认的地方。"
+        ]
+      },
+      {
+        title: "L0-L4 让证据强度说清楚",
+        paragraphs: [
+          "L0 是静态检查，L1 是本地测试或构建，L2 是集成验证，L3 是真实第三方和真实用户路径，L4 是自己或种子用户的 dogfood。不同风险的任务需要不同最低等级，不能用绿色 lint 冒充真实路径通过。",
+          "Anti-gaming 规则进一步排除了 fixture、mock、写死返回值和只验证页面能打开等伪证据。它的价值不是让流程变重，而是防止指标通过和用户目标完成被混为一谈。"
+        ]
+      }
+    ],
+    checklist: [
+      "给正式功能写出目标、非目标、验收标准和回滚方式。",
+      "在运行记录里标明实际达到的证据等级。",
+      "把重复故障沉淀为 case log 或 playbook，而不是只留在聊天记录里。"
+    ],
+    closing: [
+      "Agent 越能写代码，人越需要把边界、证据和责任写清楚。"
+    ]
+  },
+  {
+    slug: "super-agent-workbench-boundaries",
+    title: "Super Agent：把 RAG、MCP 和人工审批放进一个可解释工作台",
+    shortTitle: "Super Agent 工作台",
+    format: "Project Note",
+    summary: "从流式对话走向可暂停、可追踪、可恢复的 Agent 工作流。",
+    lead:
+      "聊天框能展示模型会不会回答问题，工作台才开始回答系统能不能把任务做完。Super Agent 把流式对话、工具调用、RAG 检索、MCP、人工审批和会话恢复放进同一套前后端骨架。",
+    sections: [
+      {
+        title: "把过程变成一等数据",
+        paragraphs: [
+          "前端通过 API 连接 FastAPI 后端，后端用 LangGraph 编排模型、工具、检索和审批节点，再通过 SSE 返回 token、工具调用、检索来源和恢复执行过程。这样用户看到的不是一段孤立文本，而是一条能解释“为什么走到这里”的执行轨迹。",
+          "人工审批不是流程中断，而是一个可恢复的 checkpoint。系统需要保存线程历史、待审批状态和后续恢复动作，才能把半自动流程变成真正可用的工作台。"
+        ]
+      },
+      {
+        title: "Demo 的边界要写在页面上",
+        paragraphs: [
+          "项目仓库提供 GitHub Pages 静态 demo，也提供离线 deterministic harness。RAG、MCP、Redis、PostgreSQL/PGVector 和真实模型链路仍需要本地或私有部署，不能把静态页面或离线 benchmark 写成线上服务已经具备这些能力。",
+          "这条边界本身就是项目的一部分：作品集展示的是系统设计和可复现入口，线上可用性则需要另外的环境和真实路径证据。"
+        ],
+        quote: "能打开 demo，不等于后端真的完成了一次任务。"
+      }
+    ],
+    checklist: [
+      "先用离线 harness 验证编排和 API 合同。",
+      "再用真实模型、数据库、Redis 和 MCP 走一条端到端路径。",
+      "发布时区分静态 demo、私有部署和线上服务三个状态。"
+    ],
+    closing: [
+      "一个值得信任的 Agent 产品，应该同时展示能力、过程和仍然没有解决的边界。"
+    ]
   }
 ] as const;
+
+export const notes = rewrittenNotes;

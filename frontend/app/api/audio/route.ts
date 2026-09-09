@@ -8,6 +8,9 @@ import {
   getLocalAudioTrackByName
 } from "@/lib/local-audio";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function parseRangeHeader(rangeHeader: string, size: number) {
   const matches = /bytes=(\d*)-(\d*)/.exec(rangeHeader);
   if (!matches) {
@@ -48,6 +51,7 @@ export async function GET(request: NextRequest) {
     return new Response(Readable.toWeb(stream) as ReadableStream, {
       headers: {
         "Accept-Ranges": "bytes",
+        "Cache-Control": "no-store",
         "Content-Length": String(track.size),
         "Content-Type": mimeType
       }
@@ -73,6 +77,7 @@ export async function GET(request: NextRequest) {
     status: 206,
     headers: {
       "Accept-Ranges": "bytes",
+      "Cache-Control": "no-store",
       "Content-Length": String(chunkSize),
       "Content-Range": `bytes ${start}-${end}/${track.size}`,
       "Content-Type": mimeType

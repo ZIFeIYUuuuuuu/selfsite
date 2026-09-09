@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { motion } from "motion/react";
 
 import { notes } from "@/lib/site-content";
 
@@ -15,6 +16,34 @@ function NotesContent() {
   const activeNote = useMemo(() => {
     return notes.find((item) => item.slug === activeSlug) ?? notes[0];
   }, [activeSlug]);
+  const activeIndex = Math.max(0, notes.findIndex((item) => item.slug === activeNote.slug));
+  const previousNote = notes[activeIndex - 1];
+  const nextNote = notes[activeIndex + 1];
+  const readingMinutes = Math.max(
+    1,
+    Math.ceil(
+      [activeNote.lead, ...activeNote.sections.flatMap((section) => [...section.paragraphs, ...(section.bullets ?? [])]), ...(activeNote.closing ?? [])]
+        .join("")
+        .length / 420
+    )
+  );
+  const [readingProgress, setReadingProgress] = useState(0);
+
+  useEffect(() => {
+    const updateReadingProgress = () => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setReadingProgress(scrollableHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100)) : 0);
+    };
+
+    updateReadingProgress();
+    window.addEventListener("scroll", updateReadingProgress, { passive: true });
+    window.addEventListener("resize", updateReadingProgress);
+
+    return () => {
+      window.removeEventListener("scroll", updateReadingProgress);
+      window.removeEventListener("resize", updateReadingProgress);
+    };
+  }, [activeNote.slug]);
 
   const handleSelectNote = (slug: string) => {
     const next = new URLSearchParams(searchParams.toString());
@@ -42,6 +71,7 @@ function NotesContent() {
 
               return (
                 <button
+                  aria-current={isActive ? "page" : undefined}
                   className={`note-nav-button ${isActive ? "is-active" : ""}`}
                   key={item.slug}
                   onClick={() => handleSelectNote(item.slug)}
@@ -60,14 +90,28 @@ function NotesContent() {
         </aside>
 
         <article className="note-reader">
+          <div aria-hidden="true" className="note-reading-progress">
+            <span style={{ width: `${readingProgress}%` }} />
+          </div>
           <div className="note-reader-meta">
             <p className="work-tag">{activeNote.format}</p>
-            <p className="project-year">最新</p>
+            <p className="project-year">{String(activeIndex + 1).padStart(2, "0")} / {String(notes.length).padStart(2, "0")}</p>
           </div>
 
-          <div className="note-reader-body">
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="note-reader-body"
+            initial={{ opacity: 0.72, y: 8 }}
+            key={activeNote.slug}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
             <h2>{activeNote.title}</h2>
             <p className="project-summary">{activeNote.lead}</p>
+            <div className="note-reader-actions" aria-label="文章信息与导航">
+              <span>{readingMinutes} 分钟阅读</span>
+              <span aria-hidden="true">·</span>
+              <a href="/work">查看相关作品</a>
+            </div>
 
             {activeNote.sections.map((section) => (
               <section className="article-section" key={section.title}>
@@ -108,7 +152,22 @@ function NotesContent() {
                 ))}
               </section>
             ) : null}
-          </div>
+
+            <nav className="note-pagination" aria-label="文章导航">
+              {previousNote ? (
+                <button type="button" onClick={() => handleSelectNote(previousNote.slug)}>
+                  <span>上一篇</span>
+                  <strong>{previousNote.shortTitle}</strong>
+                </button>
+              ) : <span />}
+              {nextNote ? (
+                <button type="button" onClick={() => handleSelectNote(nextNote.slug)}>
+                  <span>下一篇</span>
+                  <strong>{nextNote.shortTitle}</strong>
+                </button>
+              ) : <span />}
+            </nav>
+          </motion.div>
         </article>
       </section>
     </>

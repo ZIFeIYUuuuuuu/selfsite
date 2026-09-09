@@ -34,8 +34,16 @@ Thumbs.db
 
 # local assets
 music/
-frontend/public/contact/*.png
 
 # docker / runtime leftovers
 *.pid
 *.seed
+
+# Private contact assets and runtime data must never be published.
+frontend/public/contact/*
+!frontend/public/contact/.gitkeep
+.codex-backups/
+data/
+backups/
+.playwright-cli/
+frontend/.playwright-cli/

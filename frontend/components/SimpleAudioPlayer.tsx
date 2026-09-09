@@ -134,12 +134,14 @@ export default function SimpleAudioPlayer({
         setActiveIndex((current) => getRandomTrackIndex(current, tracks.length));
       }
     };
+    const syncError = () => setError("音频暂时无法播放，请检查文件或浏览器播放权限。");
 
     audio.addEventListener("timeupdate", syncTime);
     audio.addEventListener("loadedmetadata", syncDuration);
     audio.addEventListener("play", syncPlay);
     audio.addEventListener("pause", syncPause);
     audio.addEventListener("ended", syncEnded);
+    audio.addEventListener("error", syncError);
 
     return () => {
       audio.removeEventListener("timeupdate", syncTime);
@@ -147,6 +149,7 @@ export default function SimpleAudioPlayer({
       audio.removeEventListener("play", syncPlay);
       audio.removeEventListener("pause", syncPause);
       audio.removeEventListener("ended", syncEnded);
+      audio.removeEventListener("error", syncError);
     };
   }, [tracks.length]);
 
@@ -182,6 +185,7 @@ export default function SimpleAudioPlayer({
         await audio.play();
       } catch {
         setIsPlaying(false);
+        setError("播放失败，请点击重试或检查浏览器的自动播放限制。");
       }
       return;
     }
@@ -247,6 +251,9 @@ export default function SimpleAudioPlayer({
       >
         <Shuffle size={18} />
       </button>
+      <span className="floating-audio-status" aria-live="polite">
+        {error || currentTrack.title}
+      </span>
       <audio autoPlay={autoplay} preload="metadata" ref={audioRef} />
     </section>
   );
