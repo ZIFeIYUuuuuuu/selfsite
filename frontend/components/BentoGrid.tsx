@@ -81,12 +81,13 @@ const contactLinks = [
     icon: Mail,
     external: false
   }
-] as const;
+].filter((item) => item.external || Boolean(siteProfile.email));
 
 const qrItems = [
   {
     id: "qq" as const,
     label: "QQ",
+    enabled: process.env.NEXT_PUBLIC_CONTACT_QQ_ENABLED === "true",
     icon: MessageCircleMore,
     qrSrc: "/contact/qq-red.png",
     qrAlt: "QQ 二维码"
@@ -94,11 +95,12 @@ const qrItems = [
   {
     id: "wechat" as const,
     label: "微信",
+    enabled: process.env.NEXT_PUBLIC_CONTACT_WECHAT_ENABLED === "true",
     icon: QrCode,
     qrSrc: "/contact/wechat-green.png",
     qrAlt: "微信二维码"
   }
-] as const;
+].filter((item) => item.enabled);
 
 function getMode(item: LayoutItem, breakpoint: Breakpoint): CardMode {
   if (breakpoint === "xs") {

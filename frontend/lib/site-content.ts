@@ -57,7 +57,8 @@ export const siteProfile = {
   intro: "我现在主要在做 AI Agent、前后端系统和自动化工具，把想法做成能运行、能解释、能持续迭代的项目。",
   about: "这里收集我正在推进的项目、开发笔记和一些值得留下来的工程记录。",
   philosophy: "页面要清楚，代码要诚实，交付要能跑，复杂系统也要能被解释。",
-  email: "contact@example.com",
+  // Deployment-owned contact data stays outside Git; anything enabled here is public on the website.
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "",
   github: "https://github.com/ZIFeIYUuuuuuu",
   githubAvatar: "https://avatars.githubusercontent.com/u/273586639?v=4",
   publicRepos: 10,
