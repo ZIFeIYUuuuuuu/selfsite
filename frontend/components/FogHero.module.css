@@ -1,0 +1,154 @@
+/* ── FogHero layout ───────────────────────────────────────────────────────────
+   Upper/lower split via flex column — NO absolute positioning for identity
+   or project list, so they never overlap.
+   Canvas sits absolute inside .fogProjects only.
+──────────────────────────────────────────────────────────────────────────── */
+
+.fogHero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+/* ── Identity block (top 35-40%) ─────────────────────────────────────────── */
+
+.fogIdentity {
+  flex-shrink: 0;
+  width: min(1120px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: calc(var(--header-height) + 2.5rem) 0 3rem;
+}
+
+.fogRole {
+  margin: 0 0 0.45rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-red);
+}
+
+.fogName {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6.5vw, 5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.fogIntro {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.72;
+  color: var(--muted);
+  max-width: 36rem;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+
+.fogDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+/* ── Projects area (bottom flex: 1) ─────────────────────────────────────── */
+
+.fogProjects {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  /* ensure the canvas and list are always the same height */
+}
+
+/* Static project list — always in normal flow, z-index 1 */
+.fogProjectList {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: 0 0 3rem;
+  list-style: none;
+}
+
+.fogProjectRow {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr auto;
+  align-items: baseline;
+  gap: 0 1.2rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: color 160ms ease;
+  cursor: pointer;
+}
+
+.fogProjectRow:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.fogProjectRow:hover {
+  color: var(--text);
+}
+
+.fogProjectRow:hover .fogProjectTitle {
+  color: var(--text);
+}
+
+.fogProjectIndex {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-red);
+  line-height: 1.6;
+}
+
+.fogProjectTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  transition: color 160ms ease;
+}
+
+.fogProjectStack {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: var(--accent-soft);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── WebGL canvas — covers .fogProjects, pointer-events none ─────────────── */
+
+.fogCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Static fallback (shown when data-no-webgl is set) ───────────────────── */
+/* Canvas is hidden; project list is already visible — nothing extra needed */
+
+/* ── Reduced motion: hide canvas entirely ───────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .fogCanvas {
+    display: none;
+  }
+  .fogHero {
+    cursor: default;
+  }
+}

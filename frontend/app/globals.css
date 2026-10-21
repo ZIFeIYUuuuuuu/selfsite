@@ -1,5 +1,6 @@
 :root {
   --bg: #f2f3f5;
+  --bg-deep: #eceef0;
   --bg-soft: #fafafb;
   --paper: #ffffff;
   --paper-strong: #fdfdfd;
@@ -8,14 +9,32 @@
   --line: rgba(28, 31, 36, 0.08);
   --accent: #5a6068;
   --accent-soft: #9aa0a8;
-  --brand-red: #ff3347;
-  --brand-red-soft: rgba(255, 51, 71, 0.08);
-  --success: #617565;
-  --error: #8a6d6d;
+  --brand-red: #101216;
+  --brand-red-soft: rgba(16, 18, 22, 0.08);
+  --success: #5f656d;
+  --error: #5f656d;
   --header-height: 4.75rem;
   --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", sans-serif;
   --font-display: "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111111;
+  --bg-deep: #090909;
+  --bg-soft: #1a1a1a;
+  --paper: #202020;
+  --paper-strong: #292929;
+  --text: #f4f4f4;
+  --muted: #aaa;
+  --line: rgba(255, 255, 255, 0.16);
+  --accent: #e8e8e8;
+  --accent-soft: #888;
+  --brand-red: #f4f4f4;
+  --brand-red-soft: rgba(255, 255, 255, 0.1);
+  --success: #c7c7c7;
+  --error: #c7c7c7;
 }
 
 * {
@@ -36,9 +55,13 @@ html {
 
 body {
   overflow-x: hidden;
-  background: linear-gradient(180deg, #f7f8f9 0%, #f1f3f5 52%, #eceef0 100%);
+  background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 52%, var(--bg-deep) 100%);
   color: var(--text);
   font-family: var(--font-ui);
+}
+
+html[data-theme="dark"] body {
+  background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 52%, var(--bg-deep) 100%);
 }
 
 a {
@@ -92,6 +115,7 @@ a {
 
 .site-nav {
   display: flex;
+  align-items: center;
   gap: 1.2rem;
 }
 
@@ -123,6 +147,71 @@ a {
   border-radius: 999px;
   background: var(--brand-red);
   content: "";
+}
+
+.theme-toggle {
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  padding: 0.38rem 0.62rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  background: var(--paper);
+  font: inherit;
+  font-size: 0.76rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--paper);
+  border-color: var(--text);
+  background: var(--text);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+.mode-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--text);
+}
+
+.mode-toggle-option {
+  min-width: 3.4rem;
+  min-height: 1.85rem;
+  padding: .35rem .75rem;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: .7rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mode-toggle-option[aria-pressed="true"] {
+  color: var(--paper);
+  background: var(--text);
+}
+
+.mode-toggle-option:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
 }
 
 .eyebrow,
@@ -169,7 +258,7 @@ a {
   padding: 0.58rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
   backdrop-filter: blur(18px);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.95) inset,
@@ -184,15 +273,15 @@ a {
   height: 2.9rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  background: #f6f7f8;
+  background: var(--bg-soft);
   color: var(--accent);
   cursor: pointer;
 }
 
 .floating-audio-button.is-primary {
   border-color: transparent;
-  background: linear-gradient(180deg, #ff5062 0%, var(--brand-red) 100%);
-  color: #ffffff;
+  background: var(--text);
+  color: var(--paper);
   box-shadow: 0 12px 24px rgba(255, 51, 71, 0.2);
 }
 
@@ -231,7 +320,7 @@ body.is-about-me-open .floating-audio-player {
   padding: 0 1.25rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
   color: var(--text);
   font: inherit;
   font-size: 0.95rem;
@@ -1177,7 +1266,7 @@ body.is-about-me-open .floating-audio-player {
   padding: 1rem 1.1rem;
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  background: #ffffff;
+  background: var(--paper);
   line-height: 1.75;
 }
 
@@ -1270,7 +1359,7 @@ body.is-about-me-open .floating-audio-player {
   padding: 1rem 1rem 1.05rem;
   border: 1px solid transparent;
   border-radius: 1.4rem;
-  background: #ffffff;
+  background: var(--paper);
   color: inherit;
   text-align: left;
   cursor: pointer;
@@ -1288,7 +1377,7 @@ body.is-about-me-open .floating-audio-player {
 }
 
 .note-nav-button.is-active {
-  border-color: rgba(255, 51, 71, 0.18);
+  border-color: var(--line);
   box-shadow: 0 14px 28px rgba(67, 72, 79, 0.05), inset 3px 0 0 var(--brand-red);
 }
 
@@ -1420,9 +1509,9 @@ body.is-about-me-open .floating-audio-player {
 .article-quote {
   margin: 0;
   padding: 1rem 1.15rem;
-  border-left: 4px solid rgba(255, 51, 71, 0.22);
+  border-left: 4px solid color-mix(in srgb, var(--text) 24%, transparent);
   border-radius: 1rem;
-  background: rgba(255, 51, 71, 0.04);
+  background: color-mix(in srgb, var(--text) 5%, transparent);
   color: var(--text);
   font-size: 1rem;
   line-height: 1.8;
@@ -1491,7 +1580,7 @@ body.is-about-me-open .floating-audio-player {
   padding: 1.4rem;
   border: 1px solid transparent;
   border-radius: 1.5rem;
-  background: #ffffff;
+  background: var(--paper);
   color: var(--text);
   box-shadow: 0 18px 38px rgba(105, 110, 118, 0.05);
 }
@@ -1515,13 +1604,13 @@ body.is-about-me-open .floating-audio-player {
 }
 
 .health-pill.is-up {
-  background: rgba(110, 137, 118, 0.14);
-  color: #5f7567;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
 }
 
 .health-pill.is-down {
-  background: rgba(143, 117, 117, 0.12);
-  color: #876d6d;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--muted);
 }
 
 .button,
@@ -1546,8 +1635,8 @@ body.is-about-me-open .floating-audio-player {
 }
 
 .button-solid {
-  background: linear-gradient(180deg, #ff4c5f 0%, var(--brand-red) 100%);
-  color: #ffffff;
+  background: var(--text);
+  color: var(--paper);
 }
 
 .button-solid:hover {
@@ -1705,7 +1794,7 @@ pre {
   height: 2px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 51, 71, 0.08);
+  background: var(--line);
 }
 
 .note-reading-progress span {
@@ -1729,12 +1818,46 @@ pre {
   cursor: pointer;
 }
 
+html[data-theme="dark"] .about-me-panel,
+html[data-theme="dark"] .about-me-photo-card,
+html[data-theme="dark"] .about-me-detail-panel,
+html[data-theme="dark"] .note-nav-button,
+html[data-theme="dark"] .capsule-list li,
+html[data-theme="dark"] .health-panel,
+html[data-theme="dark"] .note-pagination button {
+  background-color: var(--paper);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .about-me-layer,
+html[data-theme="dark"] .about-me-photo-stage {
+  color: var(--text);
+}
+
+html[data-theme="dark"] .about-me-panel-header p {
+  color: var(--paper);
+  background: var(--text);
+}
+
+html[data-theme="dark"] .about-me-panel-header button,
+html[data-theme="dark"] .about-me-photo-close,
+html[data-theme="dark"] .about-me-photo-backdrop {
+  color: var(--text);
+  background-color: var(--bg-soft);
+}
+
+html[data-theme="dark"] .about-me-photo-card,
+html[data-theme="dark"] .about-me-detail-card {
+  color: var(--text);
+  background: var(--paper);
+}
+
 .note-pagination button:last-child {
   text-align: right;
 }
 
 .note-pagination button:hover {
-  border-color: rgba(255, 51, 71, 0.22);
+  border-color: var(--text);
   transform: translateY(-1px);
 }
 

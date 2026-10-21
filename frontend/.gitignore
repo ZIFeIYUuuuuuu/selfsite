@@ -21,3 +21,9 @@ pnpm-debug.log*
 
 # env files
 .env*.local
+
+# Deployment and local preview outputs
+/.next-development*
+/.next-experiment*
+/.selfsite-production
+*.tsbuildinfo

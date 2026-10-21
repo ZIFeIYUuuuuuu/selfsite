@@ -1,4 +1,7 @@
 import type { NextConfig } from "next";
+import { existsSync } from "node:fs";
+import { totalmem } from "node:os";
+import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from "next/constants";
 
 function normalizeOrigin(origin: string | undefined): string {
   const fallback = "http://localhost:8000";
@@ -12,6 +15,10 @@ const hasConfiguredBackendOrigin = Boolean(process.env.BACKEND_ORIGIN?.trim());
 const longLivedCacheHeader = {
   key: "Cache-Control",
   value: "public, max-age=31536000, immutable"
+};
+const developmentAssetHeader = {
+  key: "Cache-Control",
+  value: "no-store, must-revalidate"
 };
 
 function buildContentSecurityPolicy(): string {
@@ -62,7 +69,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/_next/static/:path*",
-        headers: [longLivedCacheHeader]
+        headers: [isDev ? developmentAssetHeader : longLivedCacheHeader]
       },
       {
         source: "/contact/:path*",
@@ -101,4 +108,13 @@ const nextConfig: NextConfig = {
   }
 };
 
-export default nextConfig;
+export default function guardedConfig(phase: string): NextConfig {
+  if (existsSync(".selfsite-production") &&
+      (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD)) {
+    throw new Error("This is a deployed runtime directory. Build or develop in an isolated local/CI checkout, then deploy a verified release.");
+  }
+  if (phase === PHASE_PRODUCTION_BUILD && totalmem() < 3 * 1024 ** 3) {
+    throw new Error("Production builds require at least 3 GiB RAM. Build off-server and deploy the artifact.");
+  }
+  return { ...nextConfig, distDir: phase === PHASE_DEVELOPMENT_SERVER ? ".next-development" : ".next" };
+}

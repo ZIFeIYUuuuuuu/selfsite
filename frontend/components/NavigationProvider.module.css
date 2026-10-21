@@ -1,0 +1,19 @@
+.curtainHost {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+:global(html[data-navigating="true"]) .curtainHost { pointer-events: auto; }
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--text);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  pointer-events: none;
+  will-change: transform;
+}
+:global(html):has(.curtain) { scroll-behavior: auto; }
+:global(html[data-navigating="true"] body):has(.curtain) { scroll-behavior: auto; }
+@media (prefers-reduced-motion: reduce) { .curtain { display: none; } }

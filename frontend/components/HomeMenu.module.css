@@ -1,0 +1,64 @@
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 90px 8vw 60px 38vw;
+  color: var(--home-ink);
+  background: var(--home-paper);
+}
+
+.links { width: 100%; margin-block: auto; }
+.row { overflow: hidden; }
+.link {
+  display: flex;
+  align-items: baseline;
+  width: fit-content;
+  max-width: 100%;
+  gap: 1.5rem;
+  padding-block: .045em;
+  color: inherit;
+  font-size: clamp(40px, min(7vw, 12svh), 100px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -.065em;
+  text-decoration: none;
+  transition: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.link small {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  transition: transform .55s cubic-bezier(.22, 1, .36, 1), opacity .4s;
+}
+.labelWindow { display: block; height: 1.12em; overflow: hidden; }
+.labelTrack { display: flex; flex-direction: column; transition: transform .65s cubic-bezier(.22, 1, .36, 1); }
+.labelTrack > span { display: block; height: 1.12em; white-space: nowrap; }
+.arrow {
+  align-self: center;
+  margin-left: .08em;
+  font-size: .42em;
+  letter-spacing: 0;
+  opacity: 0;
+  transform: translate(-12px, 12px) rotate(-15deg);
+  transition: opacity .35s, transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+.link:is(:hover, :focus-visible) .labelTrack { transform: translateY(-50%); }
+.link:is(:hover, :focus-visible) small { transform: translateX(4px); opacity: .5; }
+.link:is(:hover, :focus-visible) .arrow { transform: translate(0, 0) rotate(0); opacity: 1; }
+.menu .link:focus-visible { outline: 0; }
+.link:focus-visible .labelWindow { box-shadow: inset 0 -1px currentColor; }
+
+@media (max-width: 800px) {
+  .menu { padding: 90px 6vw 55px 12vw; }
+  .link { font-size: clamp(36px, min(10vw, 12svh), 76px); gap: 1rem; line-height: 1.2; }
+  .labelWindow, .labelTrack > span { height: 1.2em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .labelTrack, .arrow, .link small { transition: none; }
+}

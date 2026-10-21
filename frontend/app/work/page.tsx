@@ -1,4 +1,5 @@
 import { selectedWork } from "@/lib/site-content";
+import { projectAnchor } from "@/lib/featured-projects";
 
 export default function WorkPage() {
   return (
@@ -12,7 +13,7 @@ export default function WorkPage() {
       <section className="page-block">
         <div className="project-list">
           {selectedWork.map((item) => (
-            <article className="project-row" key={item.title}>
+            <article className="project-row" id={projectAnchor(item.title)} key={item.title}>
               <div className="project-meta">
                 <p className="work-tag">{item.tag}</p>
                 <p className="project-year">{item.year}</p>
