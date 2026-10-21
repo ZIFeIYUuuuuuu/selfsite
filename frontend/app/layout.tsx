@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import NavigationProvider from "@/components/NavigationProvider";
+import FilingFooter from "@/components/FilingFooter";
 import LenisProvider from "@/components/LenisProvider";
 import SiteHeader from "@/components/SiteHeader";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <footer className="site-footer">
             <p>{siteProfile.name}</p>
           </footer>
+          <FilingFooter />
           </NavigationProvider>
         </ThemeProvider>
       </body>
