@@ -14,8 +14,7 @@ import {
   MessageCircleMore,
   PencilLine,
   QrCode,
-  RotateCcw,
-  Sparkles
+  RotateCcw
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -27,7 +26,6 @@ import {
 } from "react-grid-layout";
 import { noCompactor } from "react-grid-layout/core";
 
-import AboutMeReveal from "@/components/AboutMeReveal";
 import { githubRepositories, notes, selectedWork, siteProfile } from "@/lib/site-content";
 
 import styles from "./BentoGrid.module.css";
@@ -596,26 +594,6 @@ export default function BentoGrid() {
                 </motion.div>
               ) : null}
             </AnimatePresence>
-              </CardShell>
-            </div>
-
-            <div key="about">
-              <CardShell id="about" isEditing={isEditing} mode={modes.about} title="关于我" className={styles.techCard}>
-            <div className={styles.aboutCardInner}>
-              {modes.about !== "compact" ? (
-                <div className={styles.cardHeader}>
-                  <div>
-                    <p className={styles.eyebrow}>About me</p>
-                    <h3 className={styles.cardTitle}>关于我</h3>
-                  </div>
-                  <span className={styles.iconFrame}>
-                    <Sparkles size={18} />
-                  </span>
-                </div>
-              ) : null}
-
-              <AboutMeReveal density={modes.about} interactive={!isEditing} variant="card" />
-            </div>
               </CardShell>
             </div>
 

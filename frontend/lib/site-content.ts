@@ -39,7 +39,10 @@ export type NoteSection = {
 };
 
 export type NoteItem = {
+  date?: string;
+  paragraphs?: readonly string[];
   slug: string;
+  cover: string;
   title: string;
   shortTitle: string;
   format: string;
@@ -62,8 +65,8 @@ export const siteProfile = {
   github: "https://github.com/ZIFeIYUuuuuuu",
   githubAvatar: "https://avatars.githubusercontent.com/u/273586639?v=4",
   publicRepos: 10,
-  qq: ""
-  wechat: ""
+  qq: "",
+  wechat: "",
 } as const;
 
 export const githubRepositories: readonly GitHubRepository[] = [
@@ -91,12 +94,6 @@ export const githubRepositories: readonly GitHubRepository[] = [
     description: "自动化实证分析系统，从 Excel 到 Stata 分析与报告生成。",
     language: "Python"
   },
-  {
-    name: "programmer-voice-input",
-    href: "https://github.com/ZIFeIYUuuuuuu/programmer-voice-input",
-    description: "面向程序员的语音输入 HUD，探索更轻的编码输入方式。",
-    language: "Python"
-  }
 ] as const;
 
 export const capabilities = [
@@ -139,6 +136,17 @@ export const workflow: readonly WorkflowStep[] = [
 ] as const;
 
 export const selectedWork: readonly WorkItem[] = [
+  {
+    title: "MOYAG Agent Canvas",
+    summary: "AI 设计工作台，把项目库、资料库、无限画布、剪辑中心与 3D 入口汇集到同一条创作路径。",
+    tag: "AI Design",
+    year: "2026",
+    detail:
+      "这个项目展示的是一个面向设计任务的 Agent Canvas。当前作品集图片取自你提供的部署录屏：首页可见提示输入区、无限画布入口、项目库、资料库、剪辑中心和 3D 入口。",
+    updatedAt: "2026",
+    stack: ["AI Agent", "Canvas", "Product UI"],
+    highlights: ["项目介绍与能力范围仅按录屏中可见的产品入口描述。"]
+  },
   {
     title: "ClaimCourt",
     summary: "面向私有文档的本地证据智能体，把模糊请求转成可解释检索计划和可追溯裁决。",
@@ -242,23 +250,6 @@ export const selectedWork: readonly WorkItem[] = [
     ]
   },
   {
-    title: "programmer-voice-input",
-    summary: "一个给程序员用的语音输入 HUD，把实时语音识别、文本润色、剪贴板和粘贴流程串起来。",
-    tag: "TypeScript",
-    year: "2026",
-    detail:
-      "这个项目解决的是编码时长文本输入不够顺手的问题。它把语音转文字放进一个轻量 HUD：用户说出需求、注释或说明，系统通过 DashScope ASR 做实时识别，可选地对文本进行润色，然后写入剪贴板或直接粘贴到当前工作流里。它更像一个面向开发者的输入辅助工具，而不是通用录音软件。",
-    github: "https://github.com/ZIFeIYUuuuuuu/programmer-voice-input",
-    updatedAt: "2026-05-18",
-    stack: ["TypeScript", "Rust", "CSS", "PowerShell", "JavaScript", "Batchfile", "VBScript", "HTML"],
-    highlights: [
-      "使用 TypeScript 和 Rust 构建桌面/HUD 类交互，配合脚本处理 Windows 上的启动、剪贴板和粘贴体验。",
-      "支持实时 DashScope ASR，把口述内容快速转成可编辑文本。",
-      "可在写代码、写 commit message、写说明文档时减少键盘输入成本。",
-      "仓库公开简介强调 optional text polish，说明它不仅转写语音，也考虑把口语整理成更适合粘贴的文本。"
-    ]
-  },
-  {
     title: "ZIFeIYUuuuuuu",
     summary: "GitHub 个人主页 README，用来集中说明个人方向、项目入口和 Applied AI / Agent Builder 身份。",
     tag: "Profile",
@@ -279,6 +270,7 @@ export const selectedWork: readonly WorkItem[] = [
 export const legacyNotes: readonly NoteItem[] = [
   {
     slug: "agent-first-team-practice",
+    cover: "/notes/agent-engineering-cover.jpg",
     title: "普通团队怎么进入 Agent-first 开发：10 条可以直接照抄的做法",
     shortTitle: "Agent-first 开发",
     format: "Essay",
@@ -396,6 +388,7 @@ export const legacyNotes: readonly NoteItem[] = [
   },
   {
     slug: "claimcourt-private-evidence-agent",
+    cover: "/notes/claimcourt-evidence-cover.jpg",
     title: "ClaimCourt：把模糊记忆编译成可审计的证据链",
     shortTitle: "ClaimCourt 证据智能体",
     format: "Project Note",
@@ -437,6 +430,7 @@ export const legacyNotes: readonly NoteItem[] = [
   },
   {
     slug: "solo-company-harness-delivery",
+    cover: "/notes/delivery-contract-cover.jpg",
     title: "Solo Company Harness：AI Coding 为什么需要合同、证据和反作弊验收",
     shortTitle: "AI Coding 交付闭环",
     format: "Engineering Note",
@@ -478,6 +472,7 @@ export const legacyNotes: readonly NoteItem[] = [
   },
   {
     slug: "super-agent-workbench-boundaries",
+    cover: "/notes/super-agent-workbench-cover.jpg",
     title: "Super Agent：把 RAG、MCP 和人工审批放进一个可解释工作台",
     shortTitle: "Super Agent 工作台",
     format: "Project Note",

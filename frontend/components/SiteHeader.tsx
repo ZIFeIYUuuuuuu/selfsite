@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { siteProfile } from "@/lib/site-content";
+import { ModeToggle } from "@/components/ThemeProvider";
 
 const navigation = [
   { href: "/", label: "首页" },
@@ -14,6 +15,8 @@ const navigation = [
 
 export default function SiteHeader() {
   const pathname = usePathname();
+
+  if (pathname === "/notes") return null;
 
   return (
     <header className="site-header">
@@ -30,6 +33,7 @@ export default function SiteHeader() {
             </Link>
           );
         })}
+        <ModeToggle />
       </nav>
     </header>
   );

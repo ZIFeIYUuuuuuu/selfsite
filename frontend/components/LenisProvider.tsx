@@ -4,6 +4,12 @@ import { useEffect } from "react";
 
 import Lenis from "lenis";
 
+declare global {
+  interface Window {
+    __zfyLenis?: Lenis;
+  }
+}
+
 export default function LenisProvider() {
   useEffect(() => {
     const lenis = new Lenis({
@@ -12,6 +18,7 @@ export default function LenisProvider() {
       smoothWheel: true,
       syncTouch: false
     });
+    window.__zfyLenis = lenis;
 
     let rafId = 0;
 
@@ -24,6 +31,7 @@ export default function LenisProvider() {
 
     return () => {
       window.cancelAnimationFrame(rafId);
+      delete window.__zfyLenis;
       lenis.destroy();
     };
   }, []);

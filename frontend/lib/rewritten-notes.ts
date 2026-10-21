@@ -3,6 +3,7 @@ import type { NoteItem } from "./site-content";
 export const rewrittenNotes: readonly NoteItem[] = [
   {
     slug: "agent-first-team-practice",
+    cover: "/notes/agent-engineering-cover.jpg",
     title: "我开始把 Agent 当成工程同事之后，先改的不是 Prompt",
     shortTitle: "Agent 进入工程现场",
     format: "Essay",
@@ -59,6 +60,7 @@ export const rewrittenNotes: readonly NoteItem[] = [
   },
   {
     slug: "claimcourt-private-evidence-agent",
+    cover: "/notes/claimcourt-evidence-cover.jpg",
     title: "ClaimCourt，把一句模糊的话送回它的证据里",
     shortTitle: "ClaimCourt 证据链",
     format: "Project Note",
@@ -101,6 +103,7 @@ export const rewrittenNotes: readonly NoteItem[] = [
   },
   {
     slug: "solo-company-harness-delivery",
+    cover: "/notes/delivery-contract-cover.jpg",
     title: "Solo Company Harness，给 AI Coding 加上一份交付合同",
     shortTitle: "AI Coding 交付闭环",
     format: "Engineering Note",
@@ -144,6 +147,7 @@ export const rewrittenNotes: readonly NoteItem[] = [
   },
   {
     slug: "super-agent-workbench-boundaries",
+    cover: "/notes/super-agent-workbench-cover.jpg",
     title: "Super Agent，聊天框之外的任务到底长什么样",
     shortTitle: "Super Agent 工作台",
     format: "Project Note",

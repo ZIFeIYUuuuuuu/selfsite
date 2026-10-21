@@ -1,0 +1,64 @@
+.intro {
+  --intro-backdrop: #111;
+  --intro-ink: #f5f5f5;
+  --intro-container: clamp(992px, min(100vw, 177.777778svh), 3840px);
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  padding: .25em 0 .5em;
+  box-sizing: border-box;
+  color: var(--intro-ink);
+  background: transparent;
+  font-size: calc(var(--intro-container) * .008333333333);
+  pointer-events: auto;
+  isolation: isolate;
+}
+
+:global(html[data-theme="dark"]) .intro {
+  --intro-backdrop: #f5f5f5;
+  --intro-ink: #111;
+}
+
+.cutout { position: absolute; z-index: 0; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; }
+.cutout path { fill: var(--intro-backdrop); fill-rule: evenodd; }
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(100%, var(--intro-container));
+  height: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-inline: auto;
+  padding: 0 1.5em;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.letterMask { position: relative; flex: 0 0 auto; width: 16em; aspect-ratio: 1; overflow: hidden; will-change: width, margin-left, transform; }
+.letterMask:nth-child(2) { margin-left: -3em; }
+.letterMask:nth-child(3) { margin-left: -2em; }
+.letterShape { display: block; width: 100%; height: 100%; color: inherit; will-change: transform; }
+
+:global(html[data-zfy-intro-skip="true"]) .intro { display: none; }
+
+@media (max-width: 991px) {
+  .intro { --intro-container: clamp(768px, 100vw, 991px); font-size: calc(var(--intro-container) * .01614530777); }
+  .letterMask { width: 8em; }
+  .letterMask:nth-child(2) { margin-left: -1.5em; }
+  .letterMask:nth-child(3) { margin-left: -1em; }
+}
+@media (max-width: 767px) {
+  .intro { --intro-container: clamp(480px, 100vw, 767px); font-size: calc(var(--intro-container) * .02086049544); }
+}
+@media (max-width: 479px) {
+  .intro { --intro-container: clamp(320px, 100vw, 479px); font-size: calc(var(--intro-container) * .03340292276); }
+  .letterMask { width: 7.5em; }
+  .letterMask:nth-child(2), .letterMask:nth-child(3) { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}
