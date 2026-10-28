@@ -13,7 +13,6 @@ flowchart LR
   Caddy --> Backend["FastAPI backend"]
   Backend --> Postgres["PostgreSQL"]
   Backend --> Redis["Redis"]
-  Frontend --> Audio["Self-hosted audio API"]
   Frontend --> Projects["Applied AI project pages"]
 ```
 

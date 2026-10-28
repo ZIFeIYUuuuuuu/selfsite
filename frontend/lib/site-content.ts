@@ -217,7 +217,7 @@ export const selectedWork: readonly WorkItem[] = [
   },
   {
     title: "selfsite",
-    summary: "这个个人博客站点本身：用于集中展示项目、笔记、联系方式和一个自托管音乐播放器。",
+    summary: "这个个人站点本身：用于集中展示个人项目、学习笔记和联系方式。",
     tag: "TypeScript",
     year: "2026",
     detail:
@@ -228,7 +228,7 @@ export const selectedWork: readonly WorkItem[] = [
     highlights: [
       "首页展示 GitHub 身份、精选项目、笔记入口和联系方式，让访问者先知道作者是谁、做过什么。",
       "作品页按 GitHub 公开仓库整理项目，并为每个项目补充用途、功能和技术栈。",
-      "包含本地音乐目录读取能力，未配置外部音频时可通过 `/api/audio` 和 `/api/audio/tracks` 播放自托管音乐。",
+      "以个人作品和学习记录为主，不提供公开留言或音乐播放服务。",
       "支持 Docker Compose 部署：Next.js、FastAPI、PostgreSQL、Redis 和 Caddy 可以按同一套配置启动。"
     ]
   },

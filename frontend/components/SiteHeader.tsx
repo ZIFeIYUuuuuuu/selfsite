@@ -8,7 +8,6 @@ import { ModeToggle } from "@/components/ThemeProvider";
 
 const navigation = [
   { href: "/", label: "首页" },
-  { href: "/guestbook", label: "留言" },
   { href: "/work", label: "作品" },
   { href: "/notes", label: "笔记" }
 ] as const;
