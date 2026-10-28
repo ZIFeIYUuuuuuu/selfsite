@@ -2,9 +2,9 @@ name: Build frontend release
 on:
   push:
     branches: [main]
-    paths: ['frontend/**', 'scripts/verify-build.cjs', '.github/workflows/build-frontend-release.yml']
+    paths: ['frontend/**', 'backend/health_server.py', 'deploy/**', 'scripts/verify-build.cjs', '.github/workflows/build-frontend-release.yml']
   pull_request:
-    paths: ['frontend/**', 'scripts/verify-build.cjs', '.github/workflows/build-frontend-release.yml']
+    paths: ['frontend/**', 'backend/health_server.py', 'deploy/**', 'scripts/verify-build.cjs', '.github/workflows/build-frontend-release.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
         run: node scripts/verify-build.cjs frontend .next --stamp
       - name: Package source and Linux runtime
         run: |
-          tar --exclude='frontend/.next/cache' --exclude='frontend/public/contact' --exclude='frontend/.env*' --exclude='frontend/*.tsbuildinfo' -czf selfsite-frontend.tar.gz frontend scripts/verify-build.cjs .github/workflows/build-frontend-release.yml docs/deployment-4175.md
+          tar --exclude='frontend/.next/cache' --exclude='frontend/public/contact' --exclude='frontend/.env*' --exclude='frontend/*.tsbuildinfo' -czf selfsite-frontend.tar.gz frontend backend/health_server.py deploy docs/guestbook-retirement-20261028.md scripts/verify-build.cjs .github/workflows/build-frontend-release.yml docs/deployment-4175.md
           sha256sum selfsite-frontend.tar.gz > selfsite-frontend.tar.gz.sha256
       - uses: actions/upload-artifact@v4
         with:

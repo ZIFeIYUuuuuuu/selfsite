@@ -1,6 +1,9 @@
 :80 {
     encode zstd gzip
 
+    @retired_features path /guestbook /guestbook/* /api/v1/guestbook /api/v1/guestbook/* /api/guestbook /api/guestbook/* /api/audio /api/audio/*
+    respond @retired_features "This feature has been permanently retired." 410
+
     @backend_api path /api/v1* /health
     reverse_proxy @backend_api backend:{$BACKEND_PORT}
 

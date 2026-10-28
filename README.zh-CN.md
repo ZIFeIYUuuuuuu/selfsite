@@ -13,7 +13,6 @@ flowchart LR
   Caddy --> Backend["FastAPI 后端"]
   Backend --> Postgres["PostgreSQL"]
   Backend --> Redis["Redis"]
-  Frontend --> Audio["自托管音频 API"]
   Frontend --> Projects["Applied AI 项目页"]
 ```
 
