@@ -24,7 +24,6 @@ const lifeFrames: readonly OpeningFrame[] = [
 ];
 
 const workFrames: readonly OpeningFrame[] = [
-  { src: "/work/moyag-agent-canvas.jpg", alt: "MOYAG Agent Canvas 首页：提示词输入、无限画布与编辑入口", fit: "contain" },
   { src: "/work/claimcourt-clean.png", alt: "ClaimCourt 本地证据智能体工作台", fit: "contain" },
   { src: "/work/super-agent-ui.jpg", alt: "Super Agent 工作台界面：对话、检索和工具流程", fit: "contain" },
   { src: "/work/interviewpilot-ai.png", alt: "InterviewPilot AI 求职训练工作台", fit: "contain" },
