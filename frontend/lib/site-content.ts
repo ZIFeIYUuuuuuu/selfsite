@@ -137,17 +137,6 @@ export const workflow: readonly WorkflowStep[] = [
 
 export const selectedWork: readonly WorkItem[] = [
   {
-    title: "MOYAG Agent Canvas",
-    summary: "AI 设计工作台，把项目库、资料库、无限画布、剪辑中心与 3D 入口汇集到同一条创作路径。",
-    tag: "AI Design",
-    year: "2026",
-    detail:
-      "这个项目展示的是一个面向设计任务的 Agent Canvas。当前作品集图片取自你提供的部署录屏：首页可见提示输入区、无限画布入口、项目库、资料库、剪辑中心和 3D 入口。",
-    updatedAt: "2026",
-    stack: ["AI Agent", "Canvas", "Product UI"],
-    highlights: ["项目介绍与能力范围仅按录屏中可见的产品入口描述。"]
-  },
-  {
     title: "ClaimCourt",
     summary: "面向私有文档的本地证据智能体，把模糊请求转成可解释检索计划和可追溯裁决。",
     tag: "Python",

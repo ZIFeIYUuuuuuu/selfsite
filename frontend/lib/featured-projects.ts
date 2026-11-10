@@ -3,7 +3,6 @@ import { selectedWork } from "./site-content";
 export const projectAnchor = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 const projectScreens = [
-  { title: "MOYAG Agent Canvas", label: "MOYAG Agent Canvas", cover: "/work/moyag-agent-canvas.jpg" },
   { title: "ClaimCourt", label: "ClaimCourt", cover: "/work/claimcourt-clean.png" },
   { title: "super-agent", label: "Super Agent", cover: "/work/super-agent-ui.jpg" },
   { title: "InterviewPilot-AI", label: "InterviewPilot AI", cover: "/work/interviewpilot-ai.png" },
