@@ -2,6 +2,7 @@
 
 import { lifeNotes } from "@/lib/life-notes";
 import ScrollPreview, { type PreviewItem } from "./ScrollPreview";
+import styles from "./ReferenceHome.module.css";
 
 const previews: readonly PreviewItem[] = lifeNotes.map(note => ({
   title: note.title,
@@ -14,5 +15,6 @@ const previews: readonly PreviewItem[] = lifeNotes.map(note => ({
 }));
 
 export default function LifeNotesExperience() {
+  if (!previews.length) return <p className={styles.lifeNotesPlaceholder}>目前站长还没想好</p>;
   return <ScrollPreview items={previews} kind="note" label="生活笔记" />;
 }

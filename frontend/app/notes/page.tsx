@@ -4,10 +4,11 @@ import { Suspense, useLayoutEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { notes } from "@/lib/site-content";
-import { lifeNotes } from "@/lib/life-notes";
+import { lifeNotes, lifeNoteSlugs } from "@/lib/life-notes";
 import { useSiteMode } from "@/components/ThemeProvider";
 import { useSiteNavigation } from "@/components/NavigationProvider";
 import ReferenceChrome from "@/components/ReferenceChrome";
+import LifeNotesExperience from "@/components/LifeNotesExperience";
 import homeStyles from "@/components/ReferenceHome.module.css";
 import styles from "./Notes.module.css";
 
@@ -16,16 +17,17 @@ function NotesContent() {
   const { mode, setMode } = useSiteMode();
   const { navigate } = useSiteNavigation();
   const activeSlug = search.get("note");
-  const articleMode = lifeNotes.some(note => note.slug === activeSlug) ? "life" : notes.some(note => note.slug === activeSlug) ? "work" : mode;
+  const lifeRequested = search.get("mode") === "life" || (activeSlug !== null && lifeNoteSlugs.includes(activeSlug));
+  const articleMode = lifeRequested ? "life" : notes.some(note => note.slug === activeSlug) ? "work" : mode;
   const collection = articleMode === "work" ? notes : lifeNotes;
   const activeNote = useMemo(() => collection.find(note => note.slug === activeSlug) ?? collection[0], [collection, activeSlug]);
-  const activeIndex = collection.findIndex(note => note.slug === activeNote.slug);
+  const activeIndex = collection.findIndex(note => note.slug === activeNote?.slug);
 
   // A direct article link owns its theme; a mode toggle opens the other collection.
   useLayoutEffect(() => {
-    if (lifeNotes.some(note => note.slug === activeSlug)) setMode("life");
+    if (lifeRequested) setMode("life");
     else if (notes.some(note => note.slug === activeSlug)) setMode("work");
-  }, [activeSlug, setMode]);
+  }, [activeSlug, lifeRequested, setMode]);
 
   const select = (slug: string) => navigate(`/notes?note=${slug}`);
   return <div className={`${homeStyles.page} ${styles.page}`} data-mode={articleMode}>
@@ -35,7 +37,7 @@ function NotesContent() {
         <Link href="/#notes">← 返回首页笔记</Link>
         <span>{articleMode === "work" ? "WORK / NOTES" : "LIFE / NOTES"}</span>
       </div>
-      <div className={`${styles.noteHub} ${collection.length === 1 ? styles.singleNote : ""}`}>
+      {activeNote ? <div className={`${styles.noteHub} ${collection.length === 1 ? styles.singleNote : ""}`}>
         <aside className={styles.sidebar} aria-label="笔记目录">
           <div className={styles.sidebarHead}><span>INDEX / {String(collection.length).padStart(2, "0")}</span><h2>笔记</h2></div>
           <nav className={styles.noteNav}>
@@ -72,7 +74,7 @@ function NotesContent() {
               </nav>
             </div>
         </article>
-      </div>
+      </div> : <LifeNotesExperience />}
       <footer className={styles.pageFooter}><Link href="/#notes">返回首页笔记 ↑</Link><span>子非鱼 · {articleMode === "work" ? "WORK" : "LIFE"} NOTES</span></footer>
     </div>
   </div>;
