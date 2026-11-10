@@ -76,7 +76,7 @@ export function ModeToggle({ className = "" }: { className?: string }) {
     if (next === mode) return;
     if (window.location.pathname === "/notes") {
       const collection = next === "life" ? lifeNotes : notes;
-      navigate(`/notes?note=${collection[0].slug}`);
+      navigate(collection[0] ? `/notes?note=${collection[0].slug}` : "/notes?mode=life");
     } else setMode(next);
   };
   return (

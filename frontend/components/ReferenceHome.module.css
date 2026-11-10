@@ -608,6 +608,14 @@
 .notesTitle span:nth-child(2) { margin-left: 16.8%; }
 .notesTitle span:nth-child(3) { margin-left: 33.5%; }
 
+.lifeNotesPlaceholder {
+  margin: 0;
+  padding: 12vh 0;
+  color: var(--home-muted);
+  font-size: clamp(18px, 2vw, 28px);
+  text-align: center;
+}
+
 .noteStory { position: relative; }
 
 .noteSticky {

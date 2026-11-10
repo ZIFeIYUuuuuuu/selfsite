@@ -5,7 +5,7 @@ import FilingFooter from "@/components/FilingFooter";
 import LenisProvider from "@/components/LenisProvider";
 import SiteHeader from "@/components/SiteHeader";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { lifeNotes } from "@/lib/life-notes";
+import { lifeNoteSlugs } from "@/lib/life-notes";
 import { notes, siteProfile } from "@/lib/site-content";
 
 import "react-grid-layout/css/styles.css";
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try { var savedMode = localStorage.getItem("selfsite-4175-mode"); if (savedMode !== "life" && savedMode !== "work") { savedMode = localStorage.getItem("selfsite-4175-theme") === "dark" ? "work" : "life"; } if (location.pathname === "/notes") { var noteSlug = new URLSearchParams(location.search).get("note"); if (${JSON.stringify(lifeNotes.map(note => note.slug))}.includes(noteSlug)) savedMode = "life"; else if (${JSON.stringify(notes.map(note => note.slug))}.includes(noteSlug)) savedMode = "work"; } document.documentElement.dataset.mode = savedMode; document.documentElement.dataset.theme = savedMode === "work" ? "dark" : "light"; document.documentElement.style.colorScheme = savedMode === "work" ? "dark" : "light"; } catch (_) {} try { if (location.pathname !== "/") document.documentElement.dataset.zfyIntroSkip = "true"; if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.dataset.zfyIntroSkip = "true"; } catch (_) {} window.setTimeout(function () { document.documentElement.dataset.zfyIntroSkip = "true"; }, 8000);`
+            __html: `try { var savedMode = localStorage.getItem("selfsite-4175-mode"); if (savedMode !== "life" && savedMode !== "work") { savedMode = localStorage.getItem("selfsite-4175-theme") === "dark" ? "work" : "life"; } if (location.pathname === "/notes") { var noteParams = new URLSearchParams(location.search); var noteSlug = noteParams.get("note"); if (noteParams.get("mode") === "life" || ${JSON.stringify(lifeNoteSlugs)}.includes(noteSlug)) savedMode = "life"; else if (${JSON.stringify(notes.map(note => note.slug))}.includes(noteSlug)) savedMode = "work"; } document.documentElement.dataset.mode = savedMode; document.documentElement.dataset.theme = savedMode === "work" ? "dark" : "light"; document.documentElement.style.colorScheme = savedMode === "work" ? "dark" : "light"; } catch (_) {} try { if (location.pathname !== "/") document.documentElement.dataset.zfyIntroSkip = "true"; if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.dataset.zfyIntroSkip = "true"; } catch (_) {} window.setTimeout(function () { document.documentElement.dataset.zfyIntroSkip = "true"; }, 8000);`
           }}
         />
       </head>
